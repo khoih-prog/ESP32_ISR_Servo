@@ -39,7 +39,7 @@ The timer counters can be configured to count up or down and support automatic r
 They can also generate alarms when they reach a specific value, defined by the software. The value of the counter can be read by 
 the software program.
 
-## New from v1.0.0
+## New from v1.0.1
 
 1. Add functions `getPosition()` and `getPulseWidth()`
 2. Optimize the code

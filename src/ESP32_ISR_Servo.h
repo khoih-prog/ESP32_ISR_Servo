@@ -5,7 +5,7 @@
  * 
  * Built by Khoi Hoang https://github.com/khoih-prog/ESP32_ISR_Servo
  * Licensed under MIT license
- * Version: 1.0.1
+ * Version: 1.0.2
  *
  * Now with these new 16 ISR-based timers, the maximum interval is practically unlimited (limited only by unsigned long miliseconds)
  * The accuracy is nearly perfect compared to software timers. The most important feature is they're ISR-based timers
@@ -23,6 +23,7 @@
  * ------- -----------  ---------- -----------
  *  1.0.0   K Hoang      12/12/2019 Initial coding
  *  1.0.1   K Hoang      13/12/2019 Add more features getPosition and getPulseWidth. Optimize.
+ *  1.0.2   K Hoang      20/12/2019 Add more Blynk examples.Change example names to avoid duplication. 
  *****************************************************************************************************************************/
 
 

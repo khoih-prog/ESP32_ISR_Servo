@@ -8,8 +8,6 @@
     "url": "//https://github.com/khoih-prog/ESP32_ISR_Servo"
   },
   "frameworks": "arduino",
-  "platforms":
-  [
-    "esp32"
-  ]
+  "platforms":  "esp32",
+  "version": "1.0.2"  
 }

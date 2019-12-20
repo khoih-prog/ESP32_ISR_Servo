@@ -26,6 +26,10 @@ https://www.arduino.cc/reference/en/language/functions/external-interrupts/attac
 2. Typically global variables are used to pass data between an ISR and the main program. To make sure variables shared between an ISR and the main program are updated correctly, declare them as `volatile`.
 
 ## Installation
+
+It's better to use `Arduino Library Manager` to install this library.
+
+Otherwise, you can install it using the following steps:
 1. Navigate to (https://github.com/khoih-prog/ESP32_ISR_Servo) page.
 2. Download the latest release `ESP32_ISR_Servo-master.zip`.
 3. Extract the zip file to `ESP32_ISR_Servo-master` directory 
@@ -162,7 +166,11 @@ void loop()
 
 ## DONE
 
-For current version v1.0.1
+#### For current version v1.0.2
+
+1. Add example using [Blynk] (http://docs.blynk.cc/) to control servos. Change example names to avoid duplication.
+
+####For current version v1.0.1
 
 1. Basic 16 ISR-based servo controllers using 1 hardware timer for ESP32.
 

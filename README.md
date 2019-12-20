@@ -170,7 +170,7 @@ void loop()
 
 1. Add example using [Blynk] (http://docs.blynk.cc/) to control servos. Change example names to avoid duplication.
 
-####For current version v1.0.1
+#### For current version v1.0.1
 
 1. Basic 16 ISR-based servo controllers using 1 hardware timer for ESP32.
 

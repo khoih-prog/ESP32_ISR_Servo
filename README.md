@@ -1,5 +1,7 @@
 # ESP32_ISR_Servo Library
 
+[![arduino-library-badge](https://www.ardu-badge.com/badge/ESP32_ISR_Servo.svg?)](https://www.ardu-badge.com/ESP32_ISR_Servo)
+
 This library enables you to use `1 Hardware Timer` on an ESP32-based board to control up to `16 independent servo motors`.
 
 ***Why do we need this ISR-based Servo controller?***

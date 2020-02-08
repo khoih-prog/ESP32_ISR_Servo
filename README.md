@@ -20,7 +20,7 @@ Functions using normal software timers, relying on loop() and calling millis(), 
 
 The catch is your function is now part of an `ISR (Interrupt Service Routine)`, and must be `lean / mean`, and follow certain rules. More to read on:
 
-https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/
+[Attach Interrupt](https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/)
 
 **Important Notes:**
 1. Inside the attached function, `delay()` won’t work and the value returned by `millis()` will not increment. Serial data received while in the function may be lost. You should declare as volatile any variables that you modify within the attached function.
@@ -32,7 +32,7 @@ https://www.arduino.cc/reference/en/language/functions/external-interrupts/attac
 It's better to use `Arduino Library Manager` to install this library.
 
 Otherwise, you can install it using the following steps:
-1. Navigate to (https://github.com/khoih-prog/ESP32_ISR_Servo) page.
+1. Navigate to [ESP32_ISR_Servo](https://github.com/khoih-prog/ESP32_ISR_Servo) page.
 2. Download the latest release `ESP32_ISR_Servo-master.zip`.
 3. Extract the zip file to `ESP32_ISR_Servo-master` directory 
 4. Copy whole folder to Arduino libraries' directory such as `.Arduino/libraries/ESP32_ISR_Servo-master`.
@@ -170,7 +170,7 @@ void loop()
 
 #### For current version v1.0.2
 
-1. Add example using [Blynk] (http://docs.blynk.cc/) to control servos. Change example names to avoid duplication.
+1. Add example using [Blynk](http://docs.blynk.cc/) to control servos. Change example names to avoid duplication.
 
 #### For current version v1.0.1
 

@@ -1,29 +1,29 @@
 /****************************************************************************************************************************
- * ESP32_ISR_Servo.h
- * For ESP32 boards
- * Written by Khoi Hoang
- * 
- * Built by Khoi Hoang https://github.com/khoih-prog/ESP32_ISR_Servo
- * Licensed under MIT license
- * Version: 1.0.2
- *
- * Now with these new 16 ISR-based timers, the maximum interval is practically unlimited (limited only by unsigned long miliseconds)
- * The accuracy is nearly perfect compared to software timers. The most important feature is they're ISR-based timers
- * Therefore, their executions are not blocked by bad-behaving functions / tasks.
- * This important feature is absolutely necessary for mission-critical tasks. 
- *
- * Loosely based on SimpleTimer - A timer library for Arduino.
- * Author: mromani@ottotecnica.com
- * Copyright (c) 2010 OTTOTECNICA Italy
- * 
- * Based on BlynkTimer.h
- * Author: Volodymyr Shymanskyy
- *
- * Version Modified By   Date      Comments
- * ------- -----------  ---------- -----------
- *  1.0.0   K Hoang      12/12/2019 Initial coding
- *  1.0.1   K Hoang      13/12/2019 Add more features getPosition and getPulseWidth. Optimize.
- *  1.0.2   K Hoang      20/12/2019 Add more Blynk examples.Change example names to avoid duplication. 
+   ESP32_ISR_Servo.h
+   For ESP32 boards
+   Written by Khoi Hoang
+
+   Built by Khoi Hoang https://github.com/khoih-prog/ESP32_ISR_Servo
+   Licensed under MIT license
+   Version: 1.0.2
+
+   Now with these new 16 ISR-based timers, the maximum interval is practically unlimited (limited only by unsigned long miliseconds)
+   The accuracy is nearly perfect compared to software timers. The most important feature is they're ISR-based timers
+   Therefore, their executions are not blocked by bad-behaving functions / tasks.
+   This important feature is absolutely necessary for mission-critical tasks.
+
+   Loosely based on SimpleTimer - A timer library for Arduino.
+   Author: mromani@ottotecnica.com
+   Copyright (c) 2010 OTTOTECNICA Italy
+
+   Based on BlynkTimer.h
+   Author: Volodymyr Shymanskyy
+
+   Version Modified By   Date      Comments
+   ------- -----------  ---------- -----------
+    1.0.0   K Hoang      12/12/2019 Initial coding
+    1.0.1   K Hoang      13/12/2019 Add more features getPosition and getPulseWidth. Optimize.
+    1.0.2   K Hoang      20/12/2019 Add more Blynk examples.Change example names to avoid duplication.
  *****************************************************************************************************************************/
 
 
@@ -35,11 +35,11 @@
 #include <inttypes.h>
 
 #if defined(ARDUINO)
-  #if ARDUINO >= 100
-    #include <Arduino.h>
-  #else
-    #include <WProgram.h>
-  #endif
+#if ARDUINO >= 100
+#include <Arduino.h>
+#else
+#include <WProgram.h>
+#endif
 #endif
 
 #include "ESP32FastTimerInterrupt.h"
@@ -60,10 +60,10 @@
 
 extern void IRAM_ATTR ESP32_ISR_Servo_Handler(void);
 
-class ESP32_ISR_Servo 
+class ESP32_ISR_Servo
 {
 
-public:
+  public:
     // maximum number of servos
     const static int MAX_SERVOS = 16;
 
@@ -74,7 +74,7 @@ public:
     ~ESP32_ISR_Servo()
     {
       if (ESP32_ITimer)
-      {    
+      {
         ESP32_ITimer->detachInterrupt();
         delete ESP32_ITimer;
       }
@@ -93,7 +93,7 @@ public:
       }
       return false;
     }
-    
+
     // Bind servo to the timer and pin, return servoIndex
     int setupServo(uint8_t pin, int min = MIN_PULSE_WIDTH, int max = MAX_PULSE_WIDTH);
 
@@ -101,19 +101,19 @@ public:
     // by using PWM, turn HIGH 'duration' microseconds within REFRESH_INTERVAL (20000us)
     // returns true on success or -1 on wrong servoIndex
     bool setPosition(unsigned servoIndex, int position);
-    
+
     // returns last position in degrees if success, or -1 on wrong servoIndex
-    int getPosition(unsigned servoIndex);   
+    int getPosition(unsigned servoIndex);
 
     // setPulseWidth will set servo PWM Pulse Width in microseconds, correcponding to certain position in degrees
     // by using PWM, turn HIGH 'pulseWidth' microseconds within REFRESH_INTERVAL (20000us)
     // min and max for each individual servo are enforced
     // returns true on success or -1 on wrong servoIndex
     bool setPulseWidth(unsigned servoIndex, unsigned int pulseWidth);
-    
+
     // returns pulseWidth in microsecs (within min/max range) if success, or 0 on wrong servoIndex
     unsigned int getPulseWidth(unsigned servoIndex);
-       
+
     // destroy the specified servo
     void deleteServo(unsigned servoIndex);
 
@@ -140,35 +140,37 @@ public:
     int getNumServos();
 
     // returns the number of available servos
-    int getNumAvailableServos() { return MAX_SERVOS - numServos; };
+    int getNumAvailableServos() {
+      return MAX_SERVOS - numServos;
+    };
 
-private:
+  private:
 
     // Use 10 microsecs timer, just fine enough to control Servo, normally requiring pulse width (PWM) 500-2000us in 20ms.
-    #define TIMER_INTERVAL_MICRO        10
+#define TIMER_INTERVAL_MICRO        10
 
-    void init() 
-    {   
-    
+    void init()
+    {
+
       ESP32_ITimer = new ESP32FastTimer(_timerNo);
 
       // Interval in microsecs
       if ( ESP32_ITimer && ESP32_ITimer->attachInterruptInterval(TIMER_INTERVAL_MICRO, (timer_callback) ESP32_ISR_Servo_Handler ) )
-      //if ( ESP32_ITimer.attachInterruptInterval(TIMER_INTERVAL_MICRO, (timer_callback) ESP32_ISR_Servo_Handler ) )
+        //if ( ESP32_ITimer.attachInterruptInterval(TIMER_INTERVAL_MICRO, (timer_callback) ESP32_ISR_Servo_Handler ) )
       {
-        #if (ISR_SERVO_DEBUG > 0)
-          Serial.println("Starting  ITimer OK");
-        #endif
+#if (ISR_SERVO_DEBUG > 0)
+        Serial.println("Starting  ITimer OK");
+#endif
       }
       else
       {
-        #if (ISR_SERVO_DEBUG > 0)
-          // Can't set ESP32_ITimer correctly. Select another freq. or interval
-          Serial.println("Fail setup ESP32_ITimer");
-        #endif
+#if (ISR_SERVO_DEBUG > 0)
+        // Can't set ESP32_ITimer correctly. Select another freq. or interval
+        Serial.println("Fail setup ESP32_ITimer");
+#endif
       }
-    
-      for (int servoIndex = 0; servoIndex < MAX_SERVOS; servoIndex++) 
+
+      for (int servoIndex = 0; servoIndex < MAX_SERVOS; servoIndex++)
       {
         memset((void*) &servo[servoIndex], 0, sizeof (servo_t));
         servo[servoIndex].count    = 0;
@@ -176,23 +178,23 @@ private:
         // Intentional bad pin
         servo[servoIndex].pin      = ESP32_WRONG_PIN;
       }
-    
+
       numServos   = 0;
-    
+
       // Init timerCount
       timerCount  = 1;
-    
+
       timerMux = portMUX_INITIALIZER_UNLOCKED;
-    }    
+    }
 
     // find the first available slot
     int findFirstFreeSlot();
 
-    typedef struct 
+    typedef struct
     {
       uint8_t       pin;                  // pin servo connected to
       unsigned long count;                // In microsecs
-      int           position;             // In degrees      
+      int           position;             // In degrees
       bool          enabled;              // true if enabled
       int16_t       min;
       int16_t       max;
@@ -202,15 +204,15 @@ private:
 
     // actual number of servos in use (-1 means uninitialized)
     volatile int numServos;
-       
+
     // timerCount starts at 1, and counting up to (REFRESH_INTERVAL / TIMER_INTERVAL_MICRO) = (20000 / 10) = 2000
     // then reset to 1. Use this to calculate when to turn ON / OFF pulse to servo
     // For example, servo1 uses pulse width 1000us => turned ON when timerCount = 1, turned OFF when timerCount = 1000 / TIMER_INTERVAL_MICRO = 100
     volatile unsigned long timerCount;
 
     // ESP32 is a multi core / multi processing chip. It is mandatory to disable task switches during ISR
-    portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;    
-    
+    portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
+
     // For ESP32 timer
     uint8_t _timerNo;
     ESP32FastTimer* ESP32_ITimer;

@@ -99,16 +99,19 @@ Another way to install is to:
 2. Optimize the code
 3. Add more complicated example
 
-Now these new `16 ISR-based Servo controllers` just use one ESP32 Hardware Timer. The number 16 is just arbitrarily chosen, and depending on application, you can increase that number to 32, 48, etc. without problem.
+---
+
+Now these new **16 ISR-based Servo controllers** just use one ESP32 Hardware Timer. The number 16 is just arbitrarily chosen, and depending on application, you can increase that number to 32, 48, etc. without problem.
 
 The accuracy is nearly perfect compared to software timers. The most important feature is they're ISR-based timers
 
 Therefore, their executions are not blocked by bad-behaving functions / tasks. This important feature is absolutely necessary for mission-critical tasks. 
 
-The `MultipleServos` example, which controls 6 servos independently, will demonstrate the nearly perfect accuracy.
+The [**MultipleServos**](examples/MultipleServos) example, which controls 6 servos independently, will demonstrate the nearly perfect accuracy.
 Being ISR-based servo controllers, their executions are not blocked by bad-behaving functions / tasks, such as connecting to WiFi, Internet and Blynk services.
 
-This non-being-blocked important feature is absolutely necessary for mission-critical tasks. 
+This non-being-blocked important feature is absolutely necessary for mission-critical tasks.
+
 You'll see blynkTimer Software is blocked while system is connecting to WiFi / Internet / Blynk, as well as by blocking task in loop(), using delay() function as an example. The elapsed time then is very unaccurate
 
 ---
@@ -450,10 +453,9 @@ void loop()
 1. Basic 16 ISR-based servo controllers using 1 hardware timer for ESP32.
 
 ---
-
 ---
 
-### Issues ###
+### Issues
 
 Submit issues to: [ESP32_ISR_Servo issues](https://github.com/khoih-prog/ESP32_ISR_Servo/issues)
 

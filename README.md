@@ -53,7 +53,7 @@ The catch is your function is now part of an **ISR (Interrupt Service Routine)**
 
 ## Prerequisite
 
-1. [`Arduino IDE 1.8.12+` for Arduino](https://www.arduino.cc/en/Main/Software)
+1. [`Arduino IDE 1.8.13+` for Arduino](https://www.arduino.cc/en/Main/Software)
 2. [`ESP32 core 1.0.4+`](https://github.com/espressif/arduino-esp32/releases) for ESP32 boards
 
 ---

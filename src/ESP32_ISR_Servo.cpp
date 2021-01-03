@@ -322,7 +322,7 @@ bool ESP32_ISR_Servo::enable(unsigned servoIndex)
     return false;
   }
 
-  if ( servo[servoIndex].count >= servo[servoIndex].min )
+  if ( servo[servoIndex].count >= servo[servoIndex].min / TIMER_INTERVAL_MICRO )
     servo[servoIndex].enabled = true;
 
   // ESP32 is a multi core / multi processing chip.
@@ -355,7 +355,7 @@ void ESP32_ISR_Servo::enableAll()
 
   for (int servoIndex = 0; servoIndex < MAX_SERVOS; servoIndex++)
   {
-    if ( (servo[servoIndex].count >= servo[servoIndex].min ) && !servo[servoIndex].enabled && (servo[servoIndex].pin <= ESP32_MAX_PIN) )
+    if ( (servo[servoIndex].count >= servo[servoIndex].min / TIMER_INTERVAL_MICRO ) && !servo[servoIndex].enabled && (servo[servoIndex].pin <= ESP32_MAX_PIN) )
     {
       servo[servoIndex].enabled = true;
     }

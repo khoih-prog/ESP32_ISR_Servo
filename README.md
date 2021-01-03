@@ -9,20 +9,62 @@
 ---
 ---
 
-#### Version v1.0.2
+## Table of Contents
 
-1. Add example using [Blynk](http://docs.blynk.cc/) to control servos. 
-2. Change example names to avoid duplication.
+* [Why do we need this ESP32_ISR_Servo library](#why-do-we-need-this-esp32_isr_servo-library)
+  * [Features](#features)
+  * [Important Notes about using ISR](#important-notes-about-using-isr)
+  * [Currently supported Boards](#currently-supported-boards)
+* [Changelog](#changelog)
+  * [Releases v1.1.0](#releases-v110)
+  * [Releases v1.0.2](#releases-v102)
+  * [Releases v1.0.1](#releases-v101)
+* [Prerequisites](#prerequisites)
+* [Installation](#installation)
+  * [Use Arduino Library Manager](#use-arduino-library-manager)
+  * [Manual Install](#manual-install)
+  * [VS Code & PlatformIO](#vs-code--platformio)
+* [HOWTO Use analogRead() with ESP32 running WiFi and/or BlueTooth (BT/BLE)](#howto-use-analogread-with-esp32-running-wifi-andor-bluetooth-btble)
+  * [1. ESP32 has 2 ADCs, named ADC1 and ADC2](#1--esp32-has-2-adcs-named-adc1-and-adc2)
+  * [2. ESP32 ADCs functions](#2-esp32-adcs-functions)
+  * [3. ESP32 WiFi uses ADC2 for WiFi functions](#3-esp32-wifi-uses-adc2-for-wifi-functions)
+* [More useful Information](#more-useful-information)
+  * [ESP32 Hardware Timers](#esp32-hardware-timers)
+  * [New functions](#new-functions)
+  * [What special in this ESP32_ISR_Servo library](#what-special-in-this-esp32_isr_servo-library)
+* [HOWTO Usage](#howto-usage)
+* [Examples](#examples)
+  * [ 1. **ESP32_BlynkServoControl**](examples/ESP32_BlynkServoControl)
+  * [ 2. ESP32_ISR_MultiServos](examples/ESP32_ISR_MultiServos)
+  * [ 3. ESP32_MultipleRandomServos](examples/ESP32_MultipleRandomServos)
+  * [ 4. ESP32_MultipleServos](examples/ESP32_MultipleServos)
+  * [ 5. ISR_MultiServos](examples/ISR_MultiServos)
+  * [ 6. MultipleRandomServos](examples/MultipleRandomServos)
+  * [ 7. MultipleServos](examples/MultipleServos)
+* [Example ESP32_BlynkServoControl](#example-esp32_blynkservocontrol)
+  * [1. File ESP32_BlynkServoControl.ino](#1-file-esp32_blynkservocontrolino)
+* [Debug Terminal Output Samples](#debug-terminal-output-samples)
+  * [1. ESP32_BlynkServoControl using LITTLEFS without SSL on ESP32_DEV](#1-esp32_blynkservocontrol-using-littlefs-without-ssl-on-esp32_dev)
+  * [2. ESP32_MultipleRandomServos on ESP32_DEV](#2-esp32_multiplerandomservos-on-esp32_dev)
+  * [3. ESP32_ISR_MultiServos on ESP32_DEV](#3-esp32_isr_multiservos-on-esp32_dev)
+* [Debug](#debug)
+* [Troubleshooting](#troubleshooting)
+* [Releases](#releases)
+* [Issues](#issues)
+* [TO DO](#to-do)
+* [DONE](#done)
+* [Contributions and Thanks](#contributions-and-thanks)
+* [Contributing](#contributing)
+* [License](#license)
+* [Copyright](#copyright)
 
-#### Version v1.0.1
-
-1. Basic 16 ISR-based servo controllers using 1 hardware timer for ESP32.
 
 ---
+---
 
-This library enables you to use `1 Hardware Timer` on an ESP32-based board to control up to `16 independent servo motors`.
+### Why do we need this [ESP32_ISR_Servo library](https://github.com/khoih-prog/ESP32_ISR_Servo)
 
-#### Why do we need this ISR-based Servo controller?
+#### Features
 
 Imagine you have a system with a **mission-critical function** controlling a **robot arm** or doing something much more important. You normally use a software timer to poll, or even place the function in loop(). But what if another function is blocking the loop() or setup().
 
@@ -36,17 +78,50 @@ These hardware timers, using interrupt, still work even if other functions are b
 
 Functions using normal software timers, relying on loop() and calling millis(), won't work if the **loop() or setup() is blocked by certain operation**. For example, certain function is blocking while it's connecting to WiFi or some services.
 
-The catch is your function is now part of an **ISR (Interrupt Service Routine)**, and must be `lean / mean`, and follow certain rules. More to read on:
+This library enables you to use `1 Hardware Timer` on an ESP32-based board to control up to `16 independent servo motors`.
 
-[HOWTO Attach Interrupt](https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/)
 
----
-
-### Important Notes:
+#### Important Notes about using ISR
 
 1. Inside the attached function, delay() won’t work and the value returned by millis() will not increment. Serial data received while in the function may be lost. You should declare as volatile any variables that you modify within the attached function.
 
 2. Typically global variables are used to pass data between an ISR and the main program. To make sure variables shared between an ISR and the main program are updated correctly, declare them as volatile.
+
+3. Avoid using Serial.print()-related functions inside ISR. Just for temporary debug purpose, but even this also can crash the system any time. Beware.
+
+4. Your functions are now part of **ISR (Interrupt Service Routine)**, and must be `lean / mean`, and follow certain rules. More to read on:
+
+[HOWTO Attach Interrupt](https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/)
+
+
+#### Currently supported Boards
+
+This [**BlynkESP32_BT_WF** library](https://github.com/khoih-prog/BlynkESP32_BT_WF) currently supports these following boards:
+
+ 1. **ESP32-based boards**.
+ 
+---
+---
+
+## Changelog
+
+### Releases v1.1.0
+
+1. Fix bug. See [Fixed count >= min comparison for servo enable](https://github.com/khoih-prog/ESP32_ISR_Servo/pull/1)
+2. Clean-up all compiler warnings possible.
+3. Add Table of Contents
+4. Add Version String
+5. Fix and Optimize old examples
+
+#### Version v1.0.2
+
+1. Add example using [Blynk](http://docs.blynk.cc/) to control servos. 
+2. Change example names to avoid duplication.
+
+#### Version v1.0.1
+
+1. Basic 16 ISR-based servo controllers using 1 hardware timer for ESP32.
+
 
 ---
 ---
@@ -74,7 +149,7 @@ Another way to install is to:
 3. Extract the zip file to `ESP32_ISR_Servo-master` directory 
 4. Copy whole `ESP32_ISR_Servo-master` folder to Arduino libraries' directory such as `~/Arduino/libraries/`.
 
-### VS Code & PlatformIO:
+### VS Code & PlatformIO
 
 1. Install [VS Code](https://code.visualstudio.com/)
 2. Install [PlatformIO](https://platformio.org/platformio-ide)
@@ -125,21 +200,26 @@ Look in file [**adc_common.c**](https://github.com/espressif/esp-idf/blob/master
 
 ## More useful Information
 
+### ESP32 Hardware Timers
+
   - **The ESP32 has two timer groups, each one with two general purpose hardware timers.**
   - All the timers are based on **64-bit counters and 16-bit prescalers.**
   - The timer counters can be configured to count up or down and support automatic reload and software reload.
   - They can also generate alarms when they reach a specific value, defined by the software. 
   - The value of the counter can be read by the software program.
   
----
 
-## New from v1.0.1
+### New functions from v1.0.1
 
-1. Add functions `getPosition()` and `getPulseWidth()`
-2. Optimize the code
-3. Add more complicated example
+```
+// returns last position in degrees if success, or -1 on wrong servoIndex
+int getPosition(unsigned servoIndex);
 
----
+// returns pulseWidth in microsecs (within min/max range) if success, or 0 on wrong servoIndex
+unsigned int getPulseWidth(unsigned servoIndex);
+```
+
+### What special in this [ESP32_ISR_Servo library](https://github.com/khoih-prog/ESP32_ISR_Servo)
 
 Now these new **16 ISR-based Servo controllers** just use one ESP32 Hardware Timer. The number 16 is just arbitrarily chosen, and depending on application, you can increase that number to 32, 48, etc. without problem.
 
@@ -155,11 +235,6 @@ This non-being-blocked important feature is absolutely necessary for mission-cri
 You'll see blynkTimer Software is blocked while system is connecting to WiFi / Internet / Blynk, as well as by blocking task in loop(), using delay() function as an example. The elapsed time then is very unaccurate
 
 ---
-
-## Supported Boards
-
-- ESP32
-
 ---
 
 ## HOWTO Usage
@@ -168,7 +243,7 @@ How to use:
 
 ```
 #ifndef ESP32
-#error This code is designed to run on ESP32 platform, not Arduino nor ESP8266! Please check your Tools->Board setting.
+  #error This code is designed to run on ESP32 platform, not Arduino nor ESP8266! Please check your Tools->Board setting.
 #endif
 
 #define TIMER_INTERRUPT_DEBUG       1
@@ -189,57 +264,65 @@ How to use:
 int servoIndex1  = -1;
 int servoIndex2  = -1;
 
-void setup() 
+void setup()
 {
   Serial.begin(115200);
-  Serial.println("\nStarting");
+  while (!Serial);
+
+  delay(200);
+
+  Serial.print(F("\nStarting ISR_MultiServos on ")); Serial.println(ARDUINO_BOARD);
+  Serial.println(ESP32_ISR_SERVO_VERSION);
   
   //Select ESP32 timer USE_ESP32_TIMER_NO
   ESP32_ISR_Servos.useTimer(USE_ESP32_TIMER_NO);
-  
+
   servoIndex1 = ESP32_ISR_Servos.setupServo(PIN_D25, MIN_MICROS, MAX_MICROS);
   servoIndex2 = ESP32_ISR_Servos.setupServo(PIN_D26, MIN_MICROS, MAX_MICROS);
-  
+
   if (servoIndex1 != -1)
-    Serial.println("Setup Servo1 OK");
+    Serial.println(F("Setup Servo1 OK"));
   else
-    Serial.println("Setup Servo1 failed");
+    Serial.println(F("Setup Servo1 failed"));
 
   if (servoIndex2 != -1)
-    Serial.println("Setup Servo2 OK");
+    Serial.println(F("Setup Servo2 OK"));
   else
-    Serial.println("Setup Servo2 failed");
+    Serial.println(F("Setup Servo2 failed"));
 }
 
-void loop() 
+void loop()
 {
   int position;
-  
+
   if ( ( servoIndex1 != -1) && ( servoIndex2 != -1) )
   {
-    for (position = 0; position <= 180; position++) 
-    { 
+    for (position = 0; position <= 180; position++)
+    {
       // goes from 0 degrees to 180 degrees
       // in steps of 1 degree
 
-      if (position %30 == 0)
+      if (position % 30 == 0)
       {
-        Serial.println("Servo1 pos = " + String(position) + ", Servo2 pos = " + String(180 - position) );
+        Serial.print(F("Servo1 pos = ")); Serial.print(position);
+        Serial.print(F(", Servo2 pos = ")); Serial.println(180 - position);
       }
-          
+
       ESP32_ISR_Servos.setPosition(servoIndex1, position);
       ESP32_ISR_Servos.setPosition(servoIndex2, 180 - position);
       // waits 30ms for the servo to reach the position
       delay(30);
     }
-    delay(5000);
     
-    for (position = 180; position >= 0; position--) 
-    { 
+    delay(5000);
+
+    for (position = 180; position >= 0; position--)
+    {
       // goes from 180 degrees to 0 degrees
-      if (position %30 == 0)
+      if (position % 30 == 0)
       {
-        Serial.println("Servo1 pos = " + String(position) + ", Servo2 pos = " + String(180 - position) );
+        Serial.print(F("Servo1 pos = ")); Serial.print(position);
+        Serial.print(F(", Servo2 pos = ")); Serial.println(180 - position);
       }
 
       ESP32_ISR_Servos.setPosition(servoIndex1, position);
@@ -247,8 +330,8 @@ void loop()
       // waits 30ms for the servo to reach the position
       delay(30);
     }
+    
     delay(5000);
-
   }
 }
 
@@ -271,12 +354,13 @@ void loop()
 
 ### Example [ESP8266_BlynkServoControl](examples/ESP8266_BlynkServoControl)
 
-```cpp
-#ifndef ESP32
-#error This code is designed to run on ESP32 platform, not Arduino nor ESP8266! Please check your Tools->Board setting.
-#endif
 
-#define BLYNK_PRINT Serial
+#### 1. File [ESP8266_BlynkServoControl.ino](examples/ESP8266_BlynkServoControl/ESP8266_BlynkServoControl.ino)
+
+```cpp
+#include "defines.h"
+#include "Credentials.h"
+#include "dynamicParams.h"
 
 //See file .../hardware/espressif/esp32/variants/(esp32|doitESP32devkitV1)/pins_arduino.h
 #define LED_BUILTIN       2         // Pin D2 mapped to pin GPIO2/ADC12 of ESP32, control on-board LED
@@ -292,7 +376,7 @@ void loop()
 #define PIN_D7            7         // Pin D7 mapped to pin GPIO7/FLASH_D0 of ESP32
 #define PIN_D8            8         // Pin D8 mapped to pin GPIO8/FLASH_D1 of ESP32
 #define PIN_D9            9         // Pin D9 mapped to pin GPIO9/FLASH_D2 of ESP32
-  
+
 #define PIN_D10           10        // Pin D10 mapped to pin GPIO10/FLASH_D3 of ESP32
 #define PIN_D11           11        // Pin D11 mapped to pin GPIO11/FLASH_CMD of ESP32
 #define PIN_D12           12        // Pin D12 mapped to pin GPIO12/HSPI_MISO/ADC15/TOUCH5/TDI of ESP32
@@ -311,7 +395,7 @@ void loop()
 #define PIN_D25           25        // Pin D25 mapped to pin GPIO25/ADC18/DAC1 of ESP32
 #define PIN_D26           26        // Pin D26 mapped to pin GPIO26/ADC19/DAC2 of ESP32
 #define PIN_D27           27        // Pin D27 mapped to pin GPIO27/ADC17/TOUCH7 of ESP32     
-   
+
 #define PIN_D32           32        // Pin D32 mapped to pin GPIO32/ADC4/TOUCH9 of ESP32
 #define PIN_D33           33        // Pin D33 mapped to pin GPIO33/ADC5/TOUCH8 of ESP32
 #define PIN_D34           34        // Pin D34 mapped to pin GPIO34/ADC6 of ESP32
@@ -324,30 +408,6 @@ void loop()
 
 #define PIN_SCL           22        // Pin SCL mapped to pin GPIO22/SCL of ESP32
 #define PIN_SDA           21        // Pin SDA mapped to pin GPIO21/SDA of ESP32  
-
-#define USE_SPIFFS    true
-//#define USE_SPIFFS    false
-
-#define USE_BLYNK_WM    true            // https://github.com/khoih-prog/Blynk_WM
-//#define USE_BLYNK_WM    false
-
-//LIBRARIES INCLUDED
-#include <WiFi.h>
-#include <WiFiClient.h>
-
-#if USE_BLYNK_WM
-  #include <BlynkSimpleEsp32_WM.h>                    // https://github.com/khoih-prog/Blynk_WM
-#else
-  #include <BlynkSimpleEsp32.h>
-
-  //BLYNK AUTHENTICATION TOKEN
-  char auth[] = "******";
-    
-  // WIFI CREDENTIALS
-  char ssid[] = "****";
-  char pass[] = "****";
-  
-#endif
 
 #define TIMER_INTERRUPT_DEBUG       1
 #define ISR_SERVO_DEBUG             1
@@ -370,7 +430,7 @@ int servoIndex3  = -1;
 int servo1Pin = PIN_D25; //SERVO1 PIN
 int servo2Pin = PIN_D26; //SERVO2 PIN
 int servo3Pin = PIN_D27; //SERVO3 PIN
-    
+
 BlynkTimer timer;
 
 // These are Blynk Slider or any Widget (STEP, Numeric Input, being able to output (unsigned) int value from 0-180.
@@ -405,21 +465,21 @@ void heartBeatPrint(void)
   if (WiFi.status() == WL_CONNECTED)
   {
     if (Blynk.connected())
-      Serial.print("B");        // B means connected to Blynk
+      Serial.print(F("B"));        // B means connected to Blynk
     else
-      Serial.print("H");        // H means connected to WiFi but no Blynk
+      Serial.print(F("H"));        // H means connected to WiFi but no Blynk
   }
   else
-    Serial.print("F");          // F means not connected to WiFi and Blynk
-  
-  if (num == 80) 
+    Serial.print(F("F"));          // F means not connected to WiFi and Blynk
+
+  if (num == 80)
   {
     Serial.println();
     num = 1;
   }
-  else if (num++ % 10 == 0) 
+  else if (num++ % 10 == 0)
   {
-    Serial.print(" ");
+    Serial.print(F(" "));
   }
 }
 
@@ -427,35 +487,51 @@ void setup()
 {
   // Debug console
   Serial.begin(115200);
-  Serial.println("\nStarting");
+  while (!Serial);
+
+  delay(200);
+
+#if (USE_LITTLEFS)
+  Serial.print(F("\nStarting ESP32_BlynkServoControl using LITTLEFS"));
+#elif (USE_SPIFFS)
+  Serial.print(F("\nStarting ESP32_BlynkServoControl using SPIFFS"));  
+#else
+  Serial.print(F("\nStarting ESP32_BlynkServoControl using EEPROM"));
+#endif
+
+#if USE_SSL
+  Serial.print(F(" with SSL on ")); Serial.println(ARDUINO_BOARD);
+#else
+  Serial.print(F(" without SSL on ")); Serial.println(ARDUINO_BOARD);
+#endif
+
+  Serial.println(BLYNK_WM_VERSION);
+  Serial.println(ESP_DOUBLE_RESET_DETECTOR_VERSION);
+  Serial.println(ESP32_ISR_SERVO_VERSION);
   
-  #if USE_BLYNK_WM
-    Blynk.begin();
-  #else
-    Blynk.begin(auth, ssid, pass);
-  #endif
+  Blynk.begin(HOST_NAME);
 
   //Select ESP32 timer USE_ESP32_TIMER_NO
   ESP32_ISR_Servos.useTimer(USE_ESP32_TIMER_NO);
-  
+
   servoIndex1 = ESP32_ISR_Servos.setupServo(servo1Pin, MIN_MICROS, MAX_MICROS);
   servoIndex2 = ESP32_ISR_Servos.setupServo(servo2Pin, MIN_MICROS, MAX_MICROS);
   servoIndex3 = ESP32_ISR_Servos.setupServo(servo3Pin, MIN_MICROS, MAX_MICROS);
-  
+
   if (servoIndex1 != -1)
-    Serial.println("Setup Servo1 OK");
+    Serial.println(F("Setup Servo1 OK"));
   else
-    Serial.println("Setup Servo1 failed");
+    Serial.println(F("Setup Servo1 failed"));
 
   if (servoIndex2 != -1)
-    Serial.println("Setup Servo2 OK");
+    Serial.println(F("Setup Servo2 OK"));
   else
-    Serial.println("Setup Servo2 failed");
+    Serial.println(F("Setup Servo2 failed"));
 
   if (servoIndex3 != -1)
-    Serial.println("Setup Servo3 OK");
+    Serial.println(F("Setup Servo3 OK"));
   else
-    Serial.println("Setup Servo3 failed");
+    Serial.println(F("Setup Servo3 failed"));
 
   timer.setInterval(30000L, heartBeatPrint);
 }
@@ -466,22 +542,195 @@ void loop()
   timer.run();
 }
 ```
+---
+---
+
+### Debug Terminal Output Samples
+
+### 1. ESP32_BlynkServoControl using LITTLEFS without SSL on ESP32_DEV
+
+
+```
+Starting ESP32_BlynkServoControl using LITTLEFS without SSL on ESP32_DEV
+Blynk_WM v1.1.0
+ESP_DoubleResetDetector v1.1.1
+ESP32_ISR_Servo v1.1.0
+[486] Hostname=ESP32ServoControl
+[511] LoadCfgFile 
+[513] OK
+[513] CCSum=0x336b,RCSum=0x336b
+[535] LoadCredFile 
+[543] OK
+[543] CrCCsum=0x29a6,CrRCsum=0x29a6
+[543] Hdr=ESP32,BrdName=ESP32_MRD
+[543] SSID=HueNet1,PW=jenniqqs
+[543] SSID1=HueNet2,PW1=jenniqqs
+[545] Server=khoih.duckdns.org,Token=bsltIJmMBJIhD9QGlVe0TxSEOtRcHdLu
+[551] Server1=khoih.duckdns.org,Token1=dpjQumZ-qT8MZnwAUd2F8ZM0DfEM_WCP
+[557] Port=9443
+[559] ======= End Config Data =======
+[562] Connecting MultiWifi...
+[6433] WiFi connected after time: 1
+[6433] SSID:HueNet1,RSSI=-36
+[6433] Channel:2,IP address:192.168.2.101
+[6433] bg: WiFi OK. Try Blynk
+[6434] 
+    ___  __          __
+   / _ )/ /_ _____  / /__
+  / _  / / // / _ \/  '_/
+ /____/_/\_, /_//_/_/\_\
+        /___/ v0.6.1 on ESP32
+
+[6447] BlynkArduinoClient.connect: Connecting to khoih.duckdns.org:8080
+[6589] Ready (ping: 6ms).
+[6657] Connected to Blynk Server = khoih.duckdns.org, Token = bsltIJmMBJIhD9QGlVe0TxSEOtRcHdLu
+[6657] bg: WiFi+Blynk OK
+Setup Servo1 OK
+Setup Servo2 OK
+Setup Servo3 OK
+```
+---
+
+### 2. ESP32_MultipleRandomServos on ESP32_DEV
+
+```
+Starting ESP32_MultipleRandomServos on ESP32_DEV
+ESP32_ISR_Servo v1.1.0
+Setup OK Servo index = 0
+Setup OK Servo index = 1
+Setup OK Servo index = 2
+Setup OK Servo index = 3
+Setup OK Servo index = 4
+Setup OK Servo index = 5
+Servos @ 0 degree
+Servos idx = 0, act. pos. (deg) = 0, pulseWidth (us) = 800
+Servos idx = 1, act. pos. (deg) = 0, pulseWidth (us) = 800
+Servos idx = 2, act. pos. (deg) = 0, pulseWidth (us) = 800
+Servos idx = 3, act. pos. (deg) = 0, pulseWidth (us) = 800
+Servos idx = 4, act. pos. (deg) = 0, pulseWidth (us) = 800
+Servos idx = 5, act. pos. (deg) = 0, pulseWidth (us) = 800
+Servos @ 90 degree
+Servos idx = 0, act. pos. (deg) = 90, pulseWidth (us) = 1620
+Servos idx = 1, act. pos. (deg) = 90, pulseWidth (us) = 1620
+Servos idx = 2, act. pos. (deg) = 90, pulseWidth (us) = 1620
+Servos idx = 3, act. pos. (deg) = 90, pulseWidth (us) = 1620
+Servos idx = 4, act. pos. (deg) = 90, pulseWidth (us) = 1620
+Servos idx = 5, act. pos. (deg) = 90, pulseWidth (us) = 1620
+Servos @ 180 degree
+Servos idx = 0, act. pos. (deg) = 180, pulseWidth (us) = 2450
+Servos idx = 1, act. pos. (deg) = 180, pulseWidth (us) = 2450
+Servos idx = 2, act. pos. (deg) = 180, pulseWidth (us) = 2450
+Servos idx = 3, act. pos. (deg) = 180, pulseWidth (us) = 2450
+Servos idx = 4, act. pos. (deg) = 180, pulseWidth (us) = 2450
+Servos idx = 5, act. pos. (deg) = 180, pulseWidth (us) = 2450
+Servos sweeps from 0-180 degress
+Servos sweeps from 180-0 degress
+Servos, index depending, be somewhere from 0-180 degress
+Servos, index depending, be somewhere from 180-0 degress
+Servos @ 0 degree
+Servos idx = 0, act. pos. (deg) = 0, pulseWidth (us) = 800
+Servos idx = 1, act. pos. (deg) = 0, pulseWidth (us) = 800
+Servos idx = 2, act. pos. (deg) = 0, pulseWidth (us) = 800
+Servos idx = 3, act. pos. (deg) = 0, pulseWidth (us) = 800
+Servos idx = 4, act. pos. (deg) = 0, pulseWidth (us) = 800
+Servos idx = 5, act. pos. (deg) = 0, pulseWidth (us) = 800
+Servos @ 90 degree
+Servos idx = 0, act. pos. (deg) = 90, pulseWidth (us) = 1620
+Servos idx = 1, act. pos. (deg) = 90, pulseWidth (us) = 1620
+Servos idx = 2, act. pos. (deg) = 90, pulseWidth (us) = 1620
+Servos idx = 3, act. pos. (deg) = 90, pulseWidth (us) = 1620
+Servos idx = 4, act. pos. (deg) = 90, pulseWidth (us) = 1620
+Servos idx = 5, act. pos. (deg) = 90, pulseWidth (us) = 1620
+Servos @ 180 degree
+Servos idx = 0, act. pos. (deg) = 180, pulseWidth (us) = 2450
+Servos idx = 1, act. pos. (deg) = 180, pulseWidth (us) = 2450
+Servos idx = 2, act. pos. (deg) = 180, pulseWidth (us) = 2450
+Servos idx = 3, act. pos. (deg) = 180, pulseWidth (us) = 2450
+Servos idx = 4, act. pos. (deg) = 180, pulseWidth (us) = 2450
+Servos idx = 5, act. pos. (deg) = 180, pulseWidth (us) = 2450
+```
 
 ---
 
-## TO DO
-
-1. Search for bug and improvement.
+### 3. ESP32_ISR_MultiServos on ESP32_DEV
 
 
-## DONE
-
-1. Similar features for Arduino (UNO, Mega, etc...) and ESP8266
-2. Add functions `getPosition()` and `getPulseWidth()`
-3. Optimize the code
-4. Add more complicated examples
+```
+Starting ESP32_ISR_MultiServos on ESP32_DEV
+ESP32_ISR_Servo v1.1.0
+Setup Servo1 OK
+Setup Servo2 OK
+Servo1 pos = 0, Servo2 pos = 180
+Servo1 pos = 30, Servo2 pos = 150
+Servo1 pos = 60, Servo2 pos = 120
+Servo1 pos = 90, Servo2 pos = 90
+Servo1 pos = 120, Servo2 pos = 60
+Servo1 pos = 150, Servo2 pos = 30
+Servo1 pos = 180, Servo2 pos = 0
+Servo1 pos = 180, Servo2 pos = 0
+Servo1 pos = 150, Servo2 pos = 30
+Servo1 pos = 120, Servo2 pos = 60
+Servo1 pos = 90, Servo2 pos = 90
+Servo1 pos = 60, Servo2 pos = 120
+Servo1 pos = 30, Servo2 pos = 150
+Servo1 pos = 0, Servo2 pos = 180
+Servo1 pos = 0, Servo2 pos = 180
+Servo1 pos = 30, Servo2 pos = 150
+Servo1 pos = 60, Servo2 pos = 120
+Servo1 pos = 90, Servo2 pos = 90
+Servo1 pos = 120, Servo2 pos = 60
+Servo1 pos = 150, Servo2 pos = 30
+Servo1 pos = 180, Servo2 pos = 0
+Servo1 pos = 180, Servo2 pos = 0
+Servo1 pos = 150, Servo2 pos = 30
+Servo1 pos = 120, Servo2 pos = 60
+Servo1 pos = 90, Servo2 pos = 90
+Servo1 pos = 60, Servo2 pos = 120
+Servo1 pos = 30, Servo2 pos = 150
+Servo1 pos = 0, Servo2 pos = 180
+Servo1 pos = 0, Servo2 pos = 180
+Servo1 pos = 30, Servo2 pos = 150
+Servo1 pos = 60, Servo2 pos = 120
+Servo1 pos = 90, Servo2 pos = 90
+Servo1 pos = 120, Servo2 pos = 60
+Servo1 pos = 150, Servo2 pos = 30
+```
 
 ---
+---
+
+### Debug
+
+Debug is enabled by default on Serial.
+
+You can also change the debugging level from 0 to 2. Be careful and using level 2 only for temporary debug purpose only.
+
+```cpp
+#define TIMER_INTERRUPT_DEBUG       1
+#define ISR_SERVO_DEBUG             1
+```
+
+---
+
+### Troubleshooting
+
+If you get compilation errors, more often than not, you may need to install a newer version of the core for Arduino boards.
+
+Sometimes, the library will only work if you update the board core to the latest version because I am using newly added functions.
+
+
+---
+---
+
+## Releases
+
+### Releases v1.1.0
+
+1. Fix bug. See [Fixed count >= min comparison for servo enable](https://github.com/khoih-prog/ESP32_ISR_Servo/pull/1)
+2. Clean-up all compiler warnings possible.
+3. Add Table of Contents
+4. Add Version String
+5. Fix and Optimize old examples
 
 #### Version v1.0.2
 
@@ -498,6 +747,36 @@ void loop()
 ### Issues
 
 Submit issues to: [ESP32_ISR_Servo issues](https://github.com/khoih-prog/ESP32_ISR_Servo/issues)
+
+---
+---
+
+## TO DO
+
+1. Search for bug and improvement.
+
+---
+
+## DONE
+
+1. Similar features for Arduino (UNO, Mega, etc...) and ESP8266
+2. Add functions `getPosition()` and `getPulseWidth()`
+3. Optimize the code
+4. Add more complicated examples
+
+---
+---
+
+### Contributions and thanks
+
+1. Thanks to [raphweb](https://github.com/raphweb) for the PR [Fixed count >= min comparison for servo enable.](https://github.com/khoih-prog/ESP32_ISR_Servo/pull/1) to fix bug and leading to the new releases v1.1.0
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/raphweb"><img src="https://github.com/raphweb.png" width="100px;" alt="raphweb"/><br /><sub><b>⭐️ raphweb</b></sub></a><br /></td>
+  </tr> 
+</table>
+
 
 ---
 

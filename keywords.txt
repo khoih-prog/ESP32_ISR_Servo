@@ -1,7 +1,16 @@
+#######################################
+# Data types (KEYWORD1)
+#######################################
+
 ESP32_ISR_Servo KEYWORD1
 ESP32_ISR_Servos  KEYWORD1
 ESP32FastTimerInterrupt	KEYWORD1
 ESP32FastTimer	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
 setFrequency	KEYWORD2
 attachInterruptInterval	KEYWORD2
 detachInterrupt	KEYWORD2
@@ -24,3 +33,7 @@ toggle  KEYWORD2
 getNumServos  KEYWORD2
 getNumAvailableServos KEYWORD2
 ESP32_ISR_Servo_Handler KEYWORD2
+
+#######################################
+# Literals (LITERAL1)
+#######################################

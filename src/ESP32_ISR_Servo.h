@@ -5,8 +5,7 @@
 
    Built by Khoi Hoang https://github.com/khoih-prog/ESP32_ISR_Servo
    Licensed under MIT license
-   Version: 1.0.2
-
+   
    Now with these new 16 ISR-based timers, the maximum interval is practically unlimited (limited only by unsigned long miliseconds)
    The accuracy is nearly perfect compared to software timers. The most important feature is they're ISR-based timers
    Therefore, their executions are not blocked by bad-behaving functions / tasks.
@@ -18,45 +17,51 @@
 
    Based on BlynkTimer.h
    Author: Volodymyr Shymanskyy
+   
+   Version: 1.1.0
 
    Version Modified By   Date      Comments
    ------- -----------  ---------- -----------
     1.0.0   K Hoang      12/12/2019 Initial coding
     1.0.1   K Hoang      13/12/2019 Add more features getPosition and getPulseWidth. Optimize.
     1.0.2   K Hoang      20/12/2019 Add more Blynk examples.Change example names to avoid duplication.
+    1.1.0   K Hoang      03/01/2021 Fix bug. Add TOC and Version String.
  *****************************************************************************************************************************/
 
+#pragma once
 
 #ifndef ESP32_ISR_SERVO_H
 #define ESP32_ISR_SERVO_H
+
+#define ESP32_ISR_SERVO_VERSION       "ESP32_ISR_Servo v1.1.0"
 
 #include <stddef.h>
 
 #include <inttypes.h>
 
 #if defined(ARDUINO)
-#if ARDUINO >= 100
-#include <Arduino.h>
-#else
-#include <WProgram.h>
+  #if ARDUINO >= 100
+    #include <Arduino.h>
+  #else
+    #include <WProgram.h>
+  #endif
 #endif
+
+#ifndef ISR_SERVO_DEBUG
+  #define ISR_SERVO_DEBUG       0
 #endif
 
 #include "ESP32FastTimerInterrupt.h"
 
-#ifndef ISR_SERVO_DEBUG
-#define ISR_SERVO_DEBUG      0
-#endif
-
-#define ESP32_MAX_PIN       39
-#define ESP32_WRONG_PIN     255
+#define ESP32_MAX_PIN           39
+#define ESP32_WRONG_PIN         255
 
 // From Servo.h - Copyright (c) 2009 Michael Margolis.  All right reserved.
 
-#define MIN_PULSE_WIDTH       544     // the shortest pulse sent to a servo  
-#define MAX_PULSE_WIDTH      2400     // the longest pulse sent to a servo 
-#define DEFAULT_PULSE_WIDTH  1500     // default pulse width when servo is attached
-#define REFRESH_INTERVAL    20000     // minumim time to refresh servos in microseconds 
+#define MIN_PULSE_WIDTH         544       // the shortest pulse sent to a servo  
+#define MAX_PULSE_WIDTH         2400      // the longest pulse sent to a servo 
+#define DEFAULT_PULSE_WIDTH     1500      // default pulse width when servo is attached
+#define REFRESH_INTERVAL        20000     // minumim time to refresh servos in microseconds 
 
 extern void IRAM_ATTR ESP32_ISR_Servo_Handler(void);
 
@@ -158,16 +163,18 @@ class ESP32_ISR_Servo
       if ( ESP32_ITimer && ESP32_ITimer->attachInterruptInterval(TIMER_INTERVAL_MICRO, (timer_callback) ESP32_ISR_Servo_Handler ) )
         //if ( ESP32_ITimer.attachInterruptInterval(TIMER_INTERVAL_MICRO, (timer_callback) ESP32_ISR_Servo_Handler ) )
       {
-#if (ISR_SERVO_DEBUG > 0)
-        Serial.println("Starting  ITimer OK");
-#endif
+//#if (ISR_SERVO_DEBUG > 0)
+        //Serial.println("Starting  ITimer OK");
+        ISR_SERVO_LOGERROR("Starting  ITimer OK");
+//#endif
       }
       else
       {
-#if (ISR_SERVO_DEBUG > 0)
+//#if (ISR_SERVO_DEBUG > 0)
         // Can't set ESP32_ITimer correctly. Select another freq. or interval
-        Serial.println("Fail setup ESP32_ITimer");
-#endif
+        //Serial.println("Fail setup ESP32_ITimer");
+        ISR_SERVO_LOGERROR("Fail setup ESP32_ITimer");
+//#endif
       }
 
       for (int servoIndex = 0; servoIndex < MAX_SERVOS; servoIndex++)

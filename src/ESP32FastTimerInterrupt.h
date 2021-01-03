@@ -1,34 +1,68 @@
-/*************************************************************************************
-   ESP32FastTimerInterrupt.h
+/****************************************************************************************************************************
    For ESP32 boards
    Written by Khoi Hoang
 
    Built by Khoi Hoang https://github.com/khoih-prog/ESP32_ISR_Servo
    Licensed under MIT license
-   Version: 1.0.1
+   
+   Now with these new 16 ISR-based timers, the maximum interval is practically unlimited (limited only by unsigned long miliseconds)
+   The accuracy is nearly perfect compared to software timers. The most important feature is they're ISR-based timers
+   Therefore, their executions are not blocked by bad-behaving functions / tasks.
+   This important feature is absolutely necessary for mission-critical tasks.
 
-   The ESP32 has two timer groups, each one with two general purpose hardware timers. All the timers
-   are based on 64 bits counters and 16 bit prescalers
-   The timer counters can be configured to count up or down and support automatic reload and software reload
-   They can also generate alarms when they reach a specific value, defined by the software.
-   The value of the counter can be read by the software program.
+   Loosely based on SimpleTimer - A timer library for Arduino.
+   Author: mromani@ottotecnica.com
+   Copyright (c) 2010 OTTOTECNICA Italy
+
+   Based on BlynkTimer.h
+   Author: Volodymyr Shymanskyy
+   
+   Version: 1.1.0
 
    Version Modified By   Date      Comments
    ------- -----------  ---------- -----------
     1.0.0   K Hoang      12/12/2019 Initial coding
     1.0.1   K Hoang      13/12/2019 Add more features getPosition and getPulseWidth. Optimize.
-****************************************************************************************/
+    1.0.2   K Hoang      20/12/2019 Add more Blynk examples.Change example names to avoid duplication.
+    1.1.0   K Hoang      03/01/2021 Fix bug. Add TOC and Version String.
+ *****************************************************************************************************************************/
+
+#pragma once
 
 #ifndef ESP32FastTimerInterrupt_h
 #define ESP32FastTimerInterrupt_h
 
-#ifndef TIMER_INTERRUPT_DEBUG
-#define TIMER_INTERRUPT_DEBUG      1
+#ifndef ESP32
+  #error This code is designed to run on ESP32 platform, not Arduino nor ESP8266! Please check your Tools->Board setting.
 #endif
 
-#ifndef ESP32
-#error This code is designed to run on ESP32 platform, not Arduino nor ESP8266! Please check your Tools->Board setting.
+#ifndef TIMER_INTERRUPT_DEBUG
+  #define TIMER_INTERRUPT_DEBUG         1
 #endif
+
+#ifndef ISR_SERVO_DEBUG
+  #define ISR_SERVO_DEBUG               1
+#endif
+
+//////////////////////////////////////////
+
+#if !defined(ISR_SERVO_DEBUG_OUTPUT)
+  #define ISR_SERVO_DEBUG_OUTPUT    Serial
+#endif
+
+#define ISR_SERVO_LOGERROR(x)         if(ISR_SERVO_DEBUG>0) { ISR_SERVO_DEBUG_OUTPUT.print("[ISR_SERVO] "); ISR_SERVO_DEBUG_OUTPUT.println(x); }
+#define ISR_SERVO_LOGERROR0(x)        if(ISR_SERVO_DEBUG>0) { ISR_SERVO_DEBUG_OUTPUT.print(x); }
+#define ISR_SERVO_LOGERROR1(x,y)      if(ISR_SERVO_DEBUG>0) { ISR_SERVO_DEBUG_OUTPUT.print("[ISR_SERVO] "); ISR_SERVO_DEBUG_OUTPUT.print(x); ISR_SERVO_DEBUG_OUTPUT.print(" "); ISR_SERVO_DEBUG_OUTPUT.println(y); }
+#define ISR_SERVO_LOGERROR2(x,y,z)    if(ISR_SERVO_DEBUG>0) { ISR_SERVO_DEBUG_OUTPUT.print("[ISR_SERVO] "); ISR_SERVO_DEBUG_OUTPUT.print(x); ISR_SERVO_DEBUG_OUTPUT.print(" "); ISR_SERVO_DEBUG_OUTPUT.print(y); ISR_SERVO_DEBUG_OUTPUT.print(" "); ISR_SERVO_DEBUG_OUTPUT.println(z); }
+#define ISR_SERVO_LOGERROR3(x,y,z,w)  if(ISR_SERVO_DEBUG>0) { ISR_SERVO_DEBUG_OUTPUT.print("[ISR_SERVO] "); ISR_SERVO_DEBUG_OUTPUT.print(x); ISR_SERVO_DEBUG_OUTPUT.print(" "); ISR_SERVO_DEBUG_OUTPUT.print(y); ISR_SERVO_DEBUG_OUTPUT.print(" "); ISR_SERVO_DEBUG_OUTPUT.print(z); ISR_SERVO_DEBUG_OUTPUT.print(" "); ISR_SERVO_DEBUG_OUTPUT.println(w); }
+
+#define ISR_SERVO_LOGDEBUG(x)         if(ISR_SERVO_DEBUG>1) { ISR_SERVO_DEBUG_OUTPUT.print("[ISR_SERVO] "); ISR_SERVO_DEBUG_OUTPUT.println(x); }
+#define ISR_SERVO_LOGDEBUG0(x)        if(ISR_SERVO_DEBUG>1) { ISR_SERVO_DEBUG_OUTPUT.print(x); }
+#define ISR_SERVO_LOGDEBUG1(x,y)      if(ISR_SERVO_DEBUG>1) { ISR_SERVO_DEBUG_OUTPUT.print("[ISR_SERVO] "); ISR_SERVO_DEBUG_OUTPUT.print(x); ISR_SERVO_DEBUG_OUTPUT.print(" "); ISR_SERVO_DEBUG_OUTPUT.println(y); }
+#define ISR_SERVO_LOGDEBUG2(x,y,z)    if(ISR_SERVO_DEBUG>1) { ISR_SERVO_DEBUG_OUTPUT.print("[ISR_SERVO] "); ISR_SERVO_DEBUG_OUTPUT.print(x); ISR_SERVO_DEBUG_OUTPUT.print(" "); ISR_SERVO_DEBUG_OUTPUT.print(y); ISR_SERVO_DEBUG_OUTPUT.print(" "); ISR_SERVO_DEBUG_OUTPUT.println(z); }
+#define ISR_SERVO_LOGDEBUG3(x,y,z,w)  if(ISR_SERVO_DEBUG>1) { ISR_SERVO_DEBUG_OUTPUT.print("[ISR_SERVO] "); ISR_SERVO_DEBUG_OUTPUT.print(x); ISR_SERVO_DEBUG_OUTPUT.print(" "); ISR_SERVO_DEBUG_OUTPUT.print(y); ISR_SERVO_DEBUG_OUTPUT.print(" "); ISR_SERVO_DEBUG_OUTPUT.print(z); ISR_SERVO_DEBUG_OUTPUT.print(" "); ISR_SERVO_DEBUG_OUTPUT.println(w); }
+//////////////////////////////////////////
+
 
 #include <esp32-hal-timer.h>
 
@@ -77,7 +111,7 @@
 */
 
 #ifndef USE_ESP32_TIMER_NO
-#define USE_ESP32_TIMER_NO          3
+  #define USE_ESP32_TIMER_NO          3
 #endif
 
 
@@ -137,10 +171,12 @@ class ESP32FastTimerInterrupt
       _timerCount = (uint64_t) _frequency / frequency;
       // count up
 
-#if (TIMER_INTERRUPT_DEBUG > 0)
-      Serial.println("ESP32TimerInterrupt: _timerNo = " + String(_timerNo) + ", _fre = " + String(_frequency)
-                     + ", _count = " + String((uint32_t) (_timerCount >> 32) ) + " - " + String((uint32_t) (_timerCount)));
-#endif
+//#if (TIMER_INTERRUPT_DEBUG > 0)
+      //Serial.println("ESP32TimerInterrupt: _timerNo = " + String(_timerNo) + ", _fre = " + String(_frequency)
+      //               + ", _count = " + String((uint32_t) (_timerCount >> 32) ) + " - " + String((uint32_t) (_timerCount)));
+      ISR_SERVO_LOGERROR3("ESP32FastTimerInterrupt: _timerNo =", _timerNo, ", _fre =", _frequency);
+      ISR_SERVO_LOGERROR3("_count =",(uint32_t) (_timerCount >> 32), " -", (uint32_t) (_timerCount));               
+//#endif
 
       // Clock to timer (prescaler) is F_CPU / 3 = 240MHz / 3 = 80MHz
       _timer = timerBegin(_timerNo, F_CPU / (_frequency * 3), true);
@@ -176,5 +212,6 @@ class ESP32FastTimerInterrupt
         setFrequency(_frequency, _callback);
     }
 }; // class ESP32FastTimerInterrupt
+
 
 #endif      //#ifndef ESP32FastTimerInterrupt_h

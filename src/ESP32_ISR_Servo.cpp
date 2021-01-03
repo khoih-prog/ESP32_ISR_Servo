@@ -5,9 +5,7 @@
 
    Built by Khoi Hoang https://github.com/khoih-prog/ESP32_ISR_Servo
    Licensed under MIT license
-   Version: 1.0.2
-
-
+   
    Now with these new 16 ISR-based timers, the maximum interval is practically unlimited (limited only by unsigned long miliseconds)
    The accuracy is nearly perfect compared to software timers. The most important feature is they're ISR-based timers
    Therefore, their executions are not blocked by bad-behaving functions / tasks.
@@ -19,22 +17,25 @@
 
    Based on BlynkTimer.h
    Author: Volodymyr Shymanskyy
+   
+   Version: 1.1.0
 
    Version Modified By   Date      Comments
    ------- -----------  ---------- -----------
     1.0.0   K Hoang      12/12/2019 Initial coding
     1.0.1   K Hoang      13/12/2019 Add more features getPosition and getPulseWidth. Optimize.
     1.0.2   K Hoang      20/12/2019 Add more Blynk examples.Change example names to avoid duplication.
+    1.1.0   K Hoang      03/01/2021 Fix bug. Add TOC and Version String.
  *****************************************************************************************************************************/
 
 #include "ESP32_ISR_Servo.h"
 #include <string.h>
 
 #ifndef ISR_SERVO_DEBUG
-#define ISR_SERVO_DEBUG               0
+  #define ISR_SERVO_DEBUG               1
 #endif
 
-#define DEFAULT_ESP32_TIMER_NO        3
+#define DEFAULT_ESP32_TIMER_NO          3
 
 ESP32_ISR_Servo ESP32_ISR_Servos;  // create servo object to control up to 16 servos
 
@@ -76,9 +77,10 @@ void IRAM_ATTR ESP32_ISR_Servo::run()
   // Reset when reaching 20000us / 10us = 2000
   if (timerCount++ >= REFRESH_INTERVAL / TIMER_INTERVAL_MICRO)
   {
-#if (ISR_SERVO_DEBUG > 1)
-    Serial.println("Reset count");
-#endif
+//#if (ISR_SERVO_DEBUG > 1)
+    //Serial.println("Reset count");
+    ISR_SERVO_LOGDEBUG("Reset count");
+//#endif
 
     timerCount = 1;
   }
@@ -101,9 +103,11 @@ int ESP32_ISR_Servo::findFirstFreeSlot()
   {
     if (servo[servoIndex].enabled == false)
     {
-#if (ISR_SERVO_DEBUG > 1)
-      Serial.println("Index = " + String(servoIndex));
-#endif
+//#if (ISR_SERVO_DEBUG > 1)
+      //Serial.print("Index = ");
+      //Serial.println(servoIndex);
+      ISR_SERVO_LOGDEBUG1("Index =", servoIndex);
+//#endif
 
       return servoIndex;
     }
@@ -139,10 +143,12 @@ int ESP32_ISR_Servo::setupServo(uint8_t pin, int min, int max)
 
   numServos++;
 
-#if (ISR_SERVO_DEBUG > 0)
-  Serial.print("Index = " + String(servoIndex) + ", count = " + String(servo[servoIndex].count));
-  Serial.println(", min = " + String(servo[servoIndex].min) + ", max = " + String(servo[servoIndex].max));
-#endif
+//#if (ISR_SERVO_DEBUG > 0)
+  //Serial.print("Index = " + String(servoIndex) + ", count = " + String(servo[servoIndex].count));
+  ISR_SERVO_LOGDEBUG3("Index =", servoIndex, ", count =", servo[servoIndex].count);
+  //Serial.println(", min = " + String(servo[servoIndex].min) + ", max = " + String(servo[servoIndex].max));
+  ISR_SERVO_LOGDEBUG3("min =", servo[servoIndex].min, ", max =", servo[servoIndex].max);
+//#endif
 
   return servoIndex;
 }
@@ -166,9 +172,11 @@ bool ESP32_ISR_Servo::setPosition(unsigned servoIndex, int position)
     // It is mandatory to disable task switches during modifying shared vars
     portEXIT_CRITICAL(&timerMux);
 
-#if (ISR_SERVO_DEBUG > 0)
-    Serial.println("Idx = " + String(servoIndex) + ", cnt = " + String(servo[servoIndex].count) + ", pos = " + String(servo[servoIndex].position));
-#endif
+//#if (ISR_SERVO_DEBUG > 0)
+    //Serial.println("Idx = " + String(servoIndex) + ", cnt = " + String(servo[servoIndex].count) + ", pos = " + String(servo[servoIndex].position));
+    ISR_SERVO_LOGERROR1("Idx =", servoIndex);
+    ISR_SERVO_LOGERROR3("cnt =", servo[servoIndex].count, ", pos =",servo[servoIndex].position);
+//#endif
 
     return true;
   }
@@ -186,9 +194,11 @@ int ESP32_ISR_Servo::getPosition(unsigned servoIndex)
   // Updates interval of existing specified servo
   if ( servo[servoIndex].enabled && (servo[servoIndex].pin <= ESP32_MAX_PIN) )
   {
-#if (ISR_SERVO_DEBUG > 0)
-    Serial.println("Idx = " + String(servoIndex) + ", cnt = " + String(servo[servoIndex].count) + ", pos = " + String(servo[servoIndex].position));
-#endif
+//#if (ISR_SERVO_DEBUG > 0)
+    //Serial.println("Idx = " + String(servoIndex) + ", cnt = " + String(servo[servoIndex].count) + ", pos = " + String(servo[servoIndex].position));
+    ISR_SERVO_LOGERROR1("Idx =", servoIndex);
+    ISR_SERVO_LOGERROR3("cnt =", servo[servoIndex].count, ", pos =",servo[servoIndex].position);
+//#endif
 
     return (servo[servoIndex].position);
   }
@@ -226,9 +236,11 @@ bool ESP32_ISR_Servo::setPulseWidth(unsigned servoIndex, unsigned int pulseWidth
     // It is mandatory to disable task switches during modifying shared vars
     portEXIT_CRITICAL(&timerMux);
 
-#if (ISR_SERVO_DEBUG > 0)
-    Serial.println("Idx = " + String(servoIndex) + ", cnt = " + String(servo[servoIndex].count) + ", pos = " + String(servo[servoIndex].position));
-#endif
+//#if (ISR_SERVO_DEBUG > 0)
+    //Serial.println("Idx = " + String(servoIndex) + ", cnt = " + String(servo[servoIndex].count) + ", pos = " + String(servo[servoIndex].position));
+    ISR_SERVO_LOGERROR1("Idx =", servoIndex);
+    ISR_SERVO_LOGERROR3("cnt =", servo[servoIndex].count, ", pos =",servo[servoIndex].position);
+//#endif
 
     return true;
   }
@@ -246,9 +258,11 @@ unsigned int ESP32_ISR_Servo::getPulseWidth(unsigned servoIndex)
   // Updates interval of existing specified servo
   if ( servo[servoIndex].enabled && (servo[servoIndex].pin <= ESP32_MAX_PIN) )
   {
-#if (ISR_SERVO_DEBUG > 0)
-    Serial.println("Idx = " + String(servoIndex) + ", cnt = " + String(servo[servoIndex].count) + ", pos = " + String(servo[servoIndex].position));
-#endif
+//#if (ISR_SERVO_DEBUG > 0)
+    //Serial.println("Idx = " + String(servoIndex) + ", cnt = " + String(servo[servoIndex].count) + ", pos = " + String(servo[servoIndex].position));
+    ISR_SERVO_LOGERROR1("Idx =", servoIndex);
+    ISR_SERVO_LOGERROR3("cnt =", servo[servoIndex].count, ", pos =",servo[servoIndex].position);
+//#endif
 
     return (servo[servoIndex].count * TIMER_INTERVAL_MICRO );
   }
@@ -322,6 +336,8 @@ bool ESP32_ISR_Servo::enable(unsigned servoIndex)
     return false;
   }
 
+  // Bug fix. See "Fixed count >= min comparison for servo enable."
+  // (https://github.com/khoih-prog/ESP32_ISR_Servo/pull/1)
   if ( servo[servoIndex].count >= servo[servoIndex].min / TIMER_INTERVAL_MICRO )
     servo[servoIndex].enabled = true;
 
@@ -355,7 +371,10 @@ void ESP32_ISR_Servo::enableAll()
 
   for (int servoIndex = 0; servoIndex < MAX_SERVOS; servoIndex++)
   {
-    if ( (servo[servoIndex].count >= servo[servoIndex].min / TIMER_INTERVAL_MICRO ) && !servo[servoIndex].enabled && (servo[servoIndex].pin <= ESP32_MAX_PIN) )
+    // Bug fix. See "Fixed count >= min comparison for servo enable."
+    // (https://github.com/khoih-prog/ESP32_ISR_Servo/pull/1)
+    if ( (servo[servoIndex].count >= servo[servoIndex].min / TIMER_INTERVAL_MICRO ) && !servo[servoIndex].enabled 
+      && (servo[servoIndex].pin <= ESP32_MAX_PIN) )
     {
       servo[servoIndex].enabled = true;
     }

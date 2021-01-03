@@ -1,7 +1,7 @@
 {
   "name": "ESP32_ISR_Servo",
-  "version": "1.0.2",
-  "keywords": "timer,interrupt,hardware,servo,ESP32,mission-critical,precise,non-blocking",
+  "version": "1.1.0",
+  "keywords": "timer,interrupt,isr,hardware,servo,ESP32,mission-critical,precise,non-blocking",
   "description": "This library enables you to use 1 Hardware Timer on an ESP32-based board to control up to 16 or more servo motors.",
   "authors":
   {

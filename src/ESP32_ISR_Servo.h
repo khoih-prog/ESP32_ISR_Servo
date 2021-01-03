@@ -161,21 +161,12 @@ class ESP32_ISR_Servo
 
       // Interval in microsecs
       if ( ESP32_ITimer && ESP32_ITimer->attachInterruptInterval(TIMER_INTERVAL_MICRO, (timer_callback) ESP32_ISR_Servo_Handler ) )
-        //if ( ESP32_ITimer.attachInterruptInterval(TIMER_INTERVAL_MICRO, (timer_callback) ESP32_ISR_Servo_Handler ) )
       {
-//#if (ISR_SERVO_DEBUG > 0)
-        //Serial.println("Starting  ITimer OK");
         ISR_SERVO_LOGERROR("Starting  ITimer OK");
-//#endif
       }
       else
       {
-//#if (ISR_SERVO_DEBUG > 0)
-        // Can't set ESP32_ITimer correctly. Select another freq. or interval
-        //Serial.println("Fail setup ESP32_ITimer");
-        ISR_SERVO_LOGERROR("Fail setup ESP32_ITimer");
-//#endif
-      }
+        ISR_SERVO_LOGERROR("Fail setup ESP32_ITimer");      }
 
       for (int servoIndex = 0; servoIndex < MAX_SERVOS; servoIndex++)
       {
@@ -203,8 +194,8 @@ class ESP32_ISR_Servo
       unsigned long count;                // In microsecs
       int           position;             // In degrees
       bool          enabled;              // true if enabled
-      int16_t       min;
-      int16_t       max;
+      uint16_t      min;
+      uint16_t      max;
     } servo_t;
 
     volatile servo_t servo[MAX_SERVOS];

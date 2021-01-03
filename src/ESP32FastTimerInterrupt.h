@@ -171,12 +171,8 @@ class ESP32FastTimerInterrupt
       _timerCount = (uint64_t) _frequency / frequency;
       // count up
 
-//#if (TIMER_INTERRUPT_DEBUG > 0)
-      //Serial.println("ESP32TimerInterrupt: _timerNo = " + String(_timerNo) + ", _fre = " + String(_frequency)
-      //               + ", _count = " + String((uint32_t) (_timerCount >> 32) ) + " - " + String((uint32_t) (_timerCount)));
       ISR_SERVO_LOGERROR3("ESP32FastTimerInterrupt: _timerNo =", _timerNo, ", _fre =", _frequency);
       ISR_SERVO_LOGERROR3("_count =",(uint32_t) (_timerCount >> 32), " -", (uint32_t) (_timerCount));               
-//#endif
 
       // Clock to timer (prescaler) is F_CPU / 3 = 240MHz / 3 = 80MHz
       _timer = timerBegin(_timerNo, F_CPU / (_frequency * 3), true);

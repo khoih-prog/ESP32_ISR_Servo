@@ -77,10 +77,7 @@ void IRAM_ATTR ESP32_ISR_Servo::run()
   // Reset when reaching 20000us / 10us = 2000
   if (timerCount++ >= REFRESH_INTERVAL / TIMER_INTERVAL_MICRO)
   {
-//#if (ISR_SERVO_DEBUG > 1)
-    //Serial.println("Reset count");
     ISR_SERVO_LOGDEBUG("Reset count");
-//#endif
 
     timerCount = 1;
   }
@@ -103,11 +100,7 @@ int ESP32_ISR_Servo::findFirstFreeSlot()
   {
     if (servo[servoIndex].enabled == false)
     {
-//#if (ISR_SERVO_DEBUG > 1)
-      //Serial.print("Index = ");
-      //Serial.println(servoIndex);
       ISR_SERVO_LOGDEBUG1("Index =", servoIndex);
-//#endif
 
       return servoIndex;
     }
@@ -143,12 +136,8 @@ int ESP32_ISR_Servo::setupServo(uint8_t pin, int min, int max)
 
   numServos++;
 
-//#if (ISR_SERVO_DEBUG > 0)
-  //Serial.print("Index = " + String(servoIndex) + ", count = " + String(servo[servoIndex].count));
   ISR_SERVO_LOGDEBUG3("Index =", servoIndex, ", count =", servo[servoIndex].count);
-  //Serial.println(", min = " + String(servo[servoIndex].min) + ", max = " + String(servo[servoIndex].max));
   ISR_SERVO_LOGDEBUG3("min =", servo[servoIndex].min, ", max =", servo[servoIndex].max);
-//#endif
 
   return servoIndex;
 }
@@ -172,11 +161,8 @@ bool ESP32_ISR_Servo::setPosition(unsigned servoIndex, int position)
     // It is mandatory to disable task switches during modifying shared vars
     portEXIT_CRITICAL(&timerMux);
 
-//#if (ISR_SERVO_DEBUG > 0)
-    //Serial.println("Idx = " + String(servoIndex) + ", cnt = " + String(servo[servoIndex].count) + ", pos = " + String(servo[servoIndex].position));
     ISR_SERVO_LOGERROR1("Idx =", servoIndex);
     ISR_SERVO_LOGERROR3("cnt =", servo[servoIndex].count, ", pos =",servo[servoIndex].position);
-//#endif
 
     return true;
   }
@@ -194,11 +180,8 @@ int ESP32_ISR_Servo::getPosition(unsigned servoIndex)
   // Updates interval of existing specified servo
   if ( servo[servoIndex].enabled && (servo[servoIndex].pin <= ESP32_MAX_PIN) )
   {
-//#if (ISR_SERVO_DEBUG > 0)
-    //Serial.println("Idx = " + String(servoIndex) + ", cnt = " + String(servo[servoIndex].count) + ", pos = " + String(servo[servoIndex].position));
     ISR_SERVO_LOGERROR1("Idx =", servoIndex);
     ISR_SERVO_LOGERROR3("cnt =", servo[servoIndex].count, ", pos =",servo[servoIndex].position);
-//#endif
 
     return (servo[servoIndex].position);
   }
@@ -236,11 +219,8 @@ bool ESP32_ISR_Servo::setPulseWidth(unsigned servoIndex, unsigned int pulseWidth
     // It is mandatory to disable task switches during modifying shared vars
     portEXIT_CRITICAL(&timerMux);
 
-//#if (ISR_SERVO_DEBUG > 0)
-    //Serial.println("Idx = " + String(servoIndex) + ", cnt = " + String(servo[servoIndex].count) + ", pos = " + String(servo[servoIndex].position));
     ISR_SERVO_LOGERROR1("Idx =", servoIndex);
     ISR_SERVO_LOGERROR3("cnt =", servo[servoIndex].count, ", pos =",servo[servoIndex].position);
-//#endif
 
     return true;
   }
@@ -258,11 +238,8 @@ unsigned int ESP32_ISR_Servo::getPulseWidth(unsigned servoIndex)
   // Updates interval of existing specified servo
   if ( servo[servoIndex].enabled && (servo[servoIndex].pin <= ESP32_MAX_PIN) )
   {
-//#if (ISR_SERVO_DEBUG > 0)
-    //Serial.println("Idx = " + String(servoIndex) + ", cnt = " + String(servo[servoIndex].count) + ", pos = " + String(servo[servoIndex].position));
     ISR_SERVO_LOGERROR1("Idx =", servoIndex);
     ISR_SERVO_LOGERROR3("cnt =", servo[servoIndex].count, ", pos =",servo[servoIndex].position);
-//#endif
 
     return (servo[servoIndex].count * TIMER_INTERVAL_MICRO );
   }

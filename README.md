@@ -113,12 +113,12 @@ This [**BlynkESP32_BT_WF** library](https://github.com/khoih-prog/BlynkESP32_BT_
 4. Add Version String
 5. Fix and Optimize old examples
 
-#### Version v1.0.2
+#### Releases v1.0.2
 
 1. Add example using [Blynk](http://docs.blynk.cc/) to control servos. 
 2. Change example names to avoid duplication.
 
-#### Version v1.0.1
+#### Releases v1.0.1
 
 1. Basic 16 ISR-based servo controllers using 1 hardware timer for ESP32.
 
@@ -209,7 +209,7 @@ Look in file [**adc_common.c**](https://github.com/espressif/esp-idf/blob/master
   - The value of the counter can be read by the software program.
   
 
-### New functions from v1.0.1
+### New functions
 
 ```
 // returns last position in degrees if success, or -1 on wrong servoIndex
@@ -352,10 +352,10 @@ void loop()
  
 ---
 
-### Example [ESP8266_BlynkServoControl](examples/ESP8266_BlynkServoControl)
+### Example [ESP32_BlynkServoControl](examples/ESP32_BlynkServoControl)
 
 
-#### 1. File [ESP8266_BlynkServoControl.ino](examples/ESP8266_BlynkServoControl/ESP8266_BlynkServoControl.ino)
+#### 1. File [ESP32_BlynkServoControl.ino](examples/ESP32_BlynkServoControl/ESP32_BlynkServoControl.ino)
 
 ```cpp
 #include "defines.h"
@@ -732,12 +732,12 @@ Sometimes, the library will only work if you update the board core to the latest
 4. Add Version String
 5. Fix and Optimize old examples
 
-#### Version v1.0.2
+#### Releases v1.0.2
 
 1. Add example using [Blynk](http://docs.blynk.cc/) to control servos. 
 2. Change example names to avoid duplication.
 
-#### Version v1.0.1
+#### Releases v1.0.1
 
 1. Basic 16 ISR-based servo controllers using 1 hardware timer for ESP32.
 

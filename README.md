@@ -14,6 +14,7 @@
 
 ## Table of Contents
 
+* [Important Change from v1.2.0](#Important-Change-from-v120)
 * [Why do we need this ESP32_ISR_Servo library](#why-do-we-need-this-esp32_isr_servo-library)
   * [Features](#features)
   * [Important Notes about using ISR](#important-notes-about-using-isr)
@@ -24,6 +25,7 @@
   * [Use Arduino Library Manager](#use-arduino-library-manager)
   * [Manual Install](#manual-install)
   * [VS Code & PlatformIO](#vs-code--platformio)
+* [HOWTO Fix `Multiple Definitions` Linker Error](#howto-fix-multiple-definitions-linker-error)
 * [HOWTO Use analogRead() with ESP32 running WiFi and/or BlueTooth (BT/BLE)](#howto-use-analogread-with-esp32-running-wifi-andor-bluetooth-btble)
   * [1. ESP32 has 2 ADCs, named ADC1 and ADC2](#1--esp32-has-2-adcs-named-adc1-and-adc2)
   * [2. ESP32 ADCs functions](#2-esp32-adcs-functions)
@@ -57,6 +59,12 @@
 * [License](#license)
 * [Copyright](#copyright)
 
+---
+---
+
+### Important Change from v1.2.0
+
+Please have a look at [HOWTO Fix `Multiple Definitions` Linker Error](#howto-fix-multiple-definitions-linker-error)
 
 ---
 ---
@@ -387,7 +395,7 @@ https://github.com/khoih-prog/ESP32_ISR_Servo/blob/60aa83a0db13a348f29ae84f53616
 
 ```
 Starting ESP32_MultipleRandomServos on ESP32_DEV
-ESP32_ISR_Servo v1.2.0
+ESP32_ISR_Servo v1.2.1
 Setup OK Servo index = 0
 Setup OK Servo index = 1
 Setup OK Servo index = 2
@@ -449,7 +457,7 @@ Servos idx = 5, act. pos. (deg) = 180, pulseWidth (us) = 2450
 
 ```
 Starting ESP32_ISR_MultiServos on ESP32_DEV
-ESP32_ISR_Servo v1.2.0
+ESP32_ISR_Servo v1.2.1
 Setup Servo1 OK
 Setup Servo2 OK
 Servo1 pos = 0, Servo2 pos = 180
@@ -494,7 +502,7 @@ Servo1 pos = 150, Servo2 pos = 30
 
 ```
 Starting MultipleRandomServos on ESP32S3_DEV
-ESP32_ISR_Servo v1.2.0
+ESP32_ISR_Servo v1.2.1
 [ISR_SERVO] ESP32_S3_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -588,7 +596,7 @@ Servos idx = 3, act. pos. (deg) = [ISR_SERVO] Idx = 3
 
 ```
 Starting ESP32_ISR_MultiServos on ESP32S2_DEV
-ESP32_ISR_Servo v1.2.0
+ESP32_ISR_Servo v1.2.1
 [ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1

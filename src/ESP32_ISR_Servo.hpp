@@ -11,7 +11,7 @@
   Therefore, their executions are not blocked by bad-behaving functions / tasks.
   This important feature is absolutely necessary for mission-critical tasks.
 
-  Version: 1.2.0
+  Version: 1.2.1
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -20,6 +20,7 @@
   1.0.2   K Hoang      20/12/2019 Add more Blynk examples.Change example names to avoid duplication.
   1.1.0   K Hoang      03/01/2021 Fix bug. Add TOC and Version String.
   1.2.0   K Hoang      06/03/2022 Convert to `h-only` style. Optimize code by using passing by `reference`
+  1.2.1   K Hoang      07/03/2022 Fix bug
  *****************************************************************************************************************************/
 
 #pragma once
@@ -43,13 +44,13 @@
 #endif
 
 #if !defined(ESP32_ISR_SERVO_VERSION)
-  #define ESP32_ISR_SERVO_VERSION             "ESP32_ISR_Servo v1.2.0"
+  #define ESP32_ISR_SERVO_VERSION             "ESP32_ISR_Servo v1.2.1"
   
   #define ESP32_ISR_SERVO_VERSION_MAJOR       1
   #define ESP32_ISR_SERVO_VERSION_MINOR       2
-  #define ESP32_ISR_SERVO_VERSION_PATCH       0
+  #define ESP32_ISR_SERVO_VERSION_PATCH       1
 
-  #define ESP32_ISR_SERVO_VERSION_INT         1002000
+  #define ESP32_ISR_SERVO_VERSION_INT         1002001
   
 #endif
 

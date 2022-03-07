@@ -12,6 +12,7 @@
 ## Table of Contents
 
 * [Changelog](#changelog)
+  * [Releases v1.2.1](#releases-v121)
   * [Releases v1.2.0](#releases-v120)
   * [Releases v1.1.0](#releases-v110)
   * [Releases v1.0.2](#releases-v102)
@@ -21,6 +22,10 @@
 ---
 
 ## Changelog
+
+### Releases v1.2.1
+
+1. Fix bug
 
 ### Releases v1.2.0
 

@@ -26,15 +26,6 @@
    if the interrupt changes a multi-byte variable between a sequence of instructions, it can be read incorrectly.
    If your data is multiple variables, such as an array and a count, usually interrupts need to be disabled
    or the entire sequence of your code which accesses the data.
-
-   Version: 1.1.0
-
-   Version Modified By   Date      Comments
-   ------- -----------  ---------- -----------
-    1.0.0   K Hoang      12/12/2019 Initial coding
-    1.0.1   K Hoang      13/12/2019 Add more features getPosition and getPulseWidth. Optimize.
-    1.0.2   K Hoang      20/12/2019 Add more Blynk examples.Change example names to avoid duplication.
-    1.1.0   K Hoang      03/01/2021 Fix bug. Add TOC and Version String.
 *****************************************************************************************************************************/
 
 /****************************************************************************************************************************
@@ -87,6 +78,7 @@
 // Select different ESP32 timer number (0-3) to avoid conflict
 #define USE_ESP32_TIMER_NO          3
 
+// To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
 #include "ESP32_ISR_Servo.h"
 
 //See file .../hardware/espressif/esp32/variants/(esp32|doitESP32devkitV1)/pins_arduino.h
@@ -150,7 +142,7 @@ typedef struct
 
 ISR_servo_t ISR_servo[NUM_SERVOS] =
 {
-  { -1, PIN_D21 }, { -1, PIN_D22 }, { -1, PIN_D23 }, { -1, PIN_D24 }, { -1, PIN_D25 }, { -1, PIN_D26 }
+  { -1, PIN_D1 }, { -1, PIN_D2 }, { -1, PIN_D3 }, { -1, PIN_D4 }, { -1, PIN_D5 }, { -1, PIN_D6 }
 };
 
 void setup()

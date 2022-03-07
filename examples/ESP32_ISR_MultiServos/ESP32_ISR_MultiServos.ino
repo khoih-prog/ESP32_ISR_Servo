@@ -26,15 +26,6 @@
    if the interrupt changes a multi-byte variable between a sequence of instructions, it can be read incorrectly.
    If your data is multiple variables, such as an array and a count, usually interrupts need to be disabled
    or the entire sequence of your code which accesses the data.
-
-   Version: 1.1.0
-
-   Version Modified By   Date      Comments
-   ------- -----------  ---------- -----------
-    1.0.0   K Hoang      12/12/2019 Initial coding
-    1.0.1   K Hoang      13/12/2019 Add more features getPosition and getPulseWidth. Optimize.
-    1.0.2   K Hoang      20/12/2019 Add more Blynk examples.Change example names to avoid duplication.
-    1.1.0   K Hoang      03/01/2021 Fix bug. Add TOC and Version String.
 *****************************************************************************************************************************/
 
 /****************************************************************************************************************************
@@ -88,6 +79,7 @@
 // Select different ESP32 timer number (0-3) to avoid conflict
 #define USE_ESP32_TIMER_NO          3
 
+// To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
 #include "ESP32_ISR_Servo.h"
 
 //See file .../hardware/espressif/esp32/variants/(esp32|doitESP32devkitV1)/pins_arduino.h
@@ -157,8 +149,8 @@ void setup()
   //Select ESP32 timer USE_ESP32_TIMER_NO
   ESP32_ISR_Servos.useTimer(USE_ESP32_TIMER_NO);
 
-  servoIndex1 = ESP32_ISR_Servos.setupServo(PIN_D25, MIN_MICROS, MAX_MICROS);
-  servoIndex2 = ESP32_ISR_Servos.setupServo(PIN_D26, MIN_MICROS, MAX_MICROS);
+  servoIndex1 = ESP32_ISR_Servos.setupServo(PIN_D3, MIN_MICROS, MAX_MICROS);
+  servoIndex2 = ESP32_ISR_Servos.setupServo(PIN_D4, MIN_MICROS, MAX_MICROS);
 
   if (servoIndex1 != -1)
     Serial.println(F("Setup Servo1 OK"));

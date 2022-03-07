@@ -47,7 +47,6 @@
   * [2. ESP32_ISR_MultiServos on ESP32_DEV](#2-esp32_isr_multiservos-on-esp32_dev)
   * [3. MultipleRandomServos on ESP32S3_DEV](#3-MultipleRandomServos-on-ESP32S3_DEV)
   * [4. ESP32_ISR_MultiServos on ESP32S2_DEV](#4-ESP32_ISR_MultiServos-on-ESP32S2_DEV)
-  * [5. MultipleRandomServos on ESP32S3_DEV](#5-MultipleRandomServos-on-ESP32S3_DEV)
 * [Debug](#debug)
 * [Troubleshooting](#troubleshooting)
 * [Issues](#issues)

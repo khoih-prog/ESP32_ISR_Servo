@@ -15,7 +15,7 @@ If you don't find anything, please [open a new issue](https://github.com/khoih-p
 Please ensure to specify the following:
 
 * Arduino IDE version (e.g. 1.8.19) or Platform.io version
-* `ESP32` Core Version (e.g. ESP32 core v2.0.2)
+* `ESP32` Core Version (e.g. ESP32 core v2.0.3)
 * `ESP32` Board type (e.g. ESP32_DEV Module, etc.)
 * `ESP32-S2` Board type (e.g. ESP32S2_DEV Module, ESP32_S2_Saola, etc.)
 * `ESP32_S3` Board type (e.g. ESP32S3_DEV, ESP32_S3_BOX, UM TINYS3, UM PROS3, UM FEATHERS3, etc.)
@@ -31,10 +31,10 @@ Please ensure to specify the following:
 
 ```
 Arduino IDE version: 1.8.19
-ESP32 core v2.0.2
+ESP32 core v2.0.3
 ESP32S3_DEV Module
-OS: Ubuntu 21.04 LTS
-Linux kh-Inspiron-3593 5.13.0-30-generic #33-Ubuntu SMP Fri Feb 4 17:03:31 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+OS: Ubuntu 20.04 LTS
+Linux xy-Inspiron-3593 5.13.0-40-generic #45~20.04.1-Ubuntu SMP Mon Apr 4 09:38:31 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
 
 Context:
 I encountered a crash while trying to use the Timer Interrupt.
@@ -54,3 +54,4 @@ There are usually some outstanding feature requests in the [existing issues list
 ### Sending Pull Requests
 
 Pull Requests with changes and fixes are also welcome!
+

@@ -12,6 +12,7 @@
 ## Table of Contents
 
 * [Changelog](#changelog)
+  * [Releases v1.3.0](#releases-v130)
   * [Releases v1.2.1](#releases-v121)
   * [Releases v1.2.0](#releases-v120)
   * [Releases v1.1.0](#releases-v110)
@@ -22,6 +23,10 @@
 ---
 
 ## Changelog
+
+### Releases v1.3.0
+
+1. Fix breaking issue caused by **ESP32 core v2.0.1+** by increasing `TIMER_INTERVAL_MICRO` to `12uS` from `10uS`. Tested OK with ESP32 core v2.0.3 now
 
 ### Releases v1.2.1
 

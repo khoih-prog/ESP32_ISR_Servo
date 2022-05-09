@@ -14,6 +14,7 @@
 
 ## Table of Contents
 
+* [Important Change from v1.3.0](#Important-Change-from-v130)
 * [Important Change from v1.2.0](#Important-Change-from-v120)
 * [Why do we need this ESP32_ISR_Servo library](#why-do-we-need-this-esp32_isr_servo-library)
   * [Features](#features)
@@ -61,6 +62,10 @@
 
 ---
 ---
+
+### Important Change from v1.3.0
+
+Please use the **new v1.3.0+** for **ESP32 core v2.0.1+**, or the library won't work anymore.
 
 ### Important Change from v1.2.0
 
@@ -116,7 +121,7 @@ This [**ESP32_ISR_Servo** library](https://github.com/khoih-prog/ESP32_ISR_Servo
 ## Prerequisites
 
 1. [`Arduino IDE 1.8.19+` for Arduino](https://github.com/arduino/Arduino). [![GitHub release](https://img.shields.io/github/release/arduino/Arduino.svg)](https://github.com/arduino/Arduino/releases/latest)
-2. [`ESP32 Core 2.0.2+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
+2. [`ESP32 Core 2.0.3+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
 
 ---
 ---
@@ -395,7 +400,7 @@ https://github.com/khoih-prog/ESP32_ISR_Servo/blob/60aa83a0db13a348f29ae84f53616
 
 ```
 Starting ESP32_MultipleRandomServos on ESP32_DEV
-ESP32_ISR_Servo v1.2.1
+ESP32_ISR_Servo v1.3.0
 Setup OK Servo index = 0
 Setup OK Servo index = 1
 Setup OK Servo index = 2
@@ -457,7 +462,7 @@ Servos idx = 5, act. pos. (deg) = 180, pulseWidth (us) = 2450
 
 ```
 Starting ESP32_ISR_MultiServos on ESP32_DEV
-ESP32_ISR_Servo v1.2.1
+ESP32_ISR_Servo v1.3.0
 Setup Servo1 OK
 Setup Servo2 OK
 Servo1 pos = 0, Servo2 pos = 180
@@ -502,7 +507,7 @@ Servo1 pos = 150, Servo2 pos = 30
 
 ```
 Starting MultipleRandomServos on ESP32S3_DEV
-ESP32_ISR_Servo v1.2.1
+ESP32_ISR_Servo v1.3.0
 [ISR_SERVO] ESP32_S3_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -596,7 +601,7 @@ Servos idx = 3, act. pos. (deg) = [ISR_SERVO] Idx = 3
 
 ```
 Starting ESP32_ISR_MultiServos on ESP32S2_DEV
-ESP32_ISR_Servo v1.2.1
+ESP32_ISR_Servo v1.3.0
 [ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -681,7 +686,7 @@ Submit issues to: [ESP32_ISR_Servo issues](https://github.com/khoih-prog/ESP32_I
  9. Optimize library code by using `reference-passing` instead of `value-passing`
 10. Improve accuracy by using `float`, instead of `uint32_t` for `position` in degrees
 11. Add example [multiFileProject](examples/multiFileProject) to demo for multiple-file project
-
+12. Fix breaking issue caused by **ESP32 core v2.0.1+** by increasing `TIMER_INTERVAL_MICRO` to `12uS` from `10uS`
 
 ---
 ---
@@ -718,3 +723,4 @@ If you want to contribute to this project:
 ## Copyright
 
 Copyright 2019- Khoi Hoang
+

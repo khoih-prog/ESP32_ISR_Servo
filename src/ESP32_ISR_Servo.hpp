@@ -11,7 +11,7 @@
   Therefore, their executions are not blocked by bad-behaving functions / tasks.
   This important feature is absolutely necessary for mission-critical tasks.
 
-  Version: 1.2.1
+  Version: 1.3.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -21,6 +21,7 @@
   1.1.0   K Hoang      03/01/2021 Fix bug. Add TOC and Version String.
   1.2.0   K Hoang      06/03/2022 Convert to `h-only` style. Optimize code by using passing by `reference`
   1.2.1   K Hoang      07/03/2022 Fix bug
+  1.3.0   K Hoang      08/05/2022 Fix issue with ESP32 core v2.0.1+
  *****************************************************************************************************************************/
 
 #pragma once
@@ -44,13 +45,13 @@
 #endif
 
 #if !defined(ESP32_ISR_SERVO_VERSION)
-  #define ESP32_ISR_SERVO_VERSION             "ESP32_ISR_Servo v1.2.1"
+  #define ESP32_ISR_SERVO_VERSION             "ESP32_ISR_Servo v1.3.0"
   
   #define ESP32_ISR_SERVO_VERSION_MAJOR       1
-  #define ESP32_ISR_SERVO_VERSION_MINOR       2
-  #define ESP32_ISR_SERVO_VERSION_PATCH       1
+  #define ESP32_ISR_SERVO_VERSION_MINOR       3
+  #define ESP32_ISR_SERVO_VERSION_PATCH       0
 
-  #define ESP32_ISR_SERVO_VERSION_INT         1002001
+  #define ESP32_ISR_SERVO_VERSION_INT         1003000
   
 #endif
 
@@ -176,8 +177,9 @@ class ESP32_ISR_Servo
 
   private:
 
-    // Use 10 microsecs timer, just fine enough to control Servo, normally requiring pulse width (PWM) 500-2000us in 20ms.
-#define TIMER_INTERVAL_MICRO        10
+    // Use 10 microsecs timer => not working from core v2.0.1+
+    // Use 12 microsecs timer now, just fine enough to control Servo, normally requiring pulse width (PWM) 500-2000us in 20ms.
+#define TIMER_INTERVAL_MICRO        12
 
     void init()
     {

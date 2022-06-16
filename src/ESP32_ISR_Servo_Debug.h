@@ -11,7 +11,7 @@
   Therefore, their executions are not blocked by bad-behaving functions / tasks.
   This important feature is absolutely necessary for mission-critical tasks.
 
-  Version: 1.3.0
+  Version: 1.3.1
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -22,6 +22,7 @@
   1.2.0   K Hoang      06/03/2022 Convert to `h-only` style. Optimize code by using passing by `reference`
   1.2.1   K Hoang      07/03/2022 Fix bug
   1.3.0   K Hoang      08/05/2022 Fix issue with ESP32 core v2.0.1+
+  1.3.1   K Hoang      16/06/2022 Add support to new Adafruit boards
  *****************************************************************************************************************************/
 
 #pragma once

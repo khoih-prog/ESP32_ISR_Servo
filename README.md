@@ -111,9 +111,9 @@ This library enables you to use `1 Hardware Timer` on an ESP32, ESP32_S2, ESP32_
 This [**ESP32_ISR_Servo** library](https://github.com/khoih-prog/ESP32_ISR_Servo) currently supports these following boards:
 
 1. ESP32 boards, such as `ESP32_DEV`, etc.
-2. ESP32S2-based boards, such as `ESP32S2_DEV`, `ESP32_S2 Saola`, etc.
+2. ESP32S2-based boards, such as `ESP32S2_DEV`, `ESP32_S2 Saola`, Adafruit QTPY_ESP32S2, etc.
 3. ESP32C3-based boards, such as `ESP32C3_DEV`, etc. **New**
-4. ESP32_S3 (ESP32S3_DEV, ESP32_S3_BOX, UM TINYS3, UM PROS3, UM FEATHERS3, etc.) **New**
+4. ESP32_S3 (ESP32S3_DEV, ESP32_S3_BOX, UM TINYS3, UM PROS3, UM FEATHERS3, FEATHER_ESP32S3_NOPSRAM and QTPY_ESP32S3_NOPSRAM, etc.) **New**
  
 ---
 ---
@@ -400,7 +400,7 @@ https://github.com/khoih-prog/ESP32_ISR_Servo/blob/60aa83a0db13a348f29ae84f53616
 
 ```
 Starting ESP32_MultipleRandomServos on ESP32_DEV
-ESP32_ISR_Servo v1.3.0
+ESP32_ISR_Servo v1.3.1
 Setup OK Servo index = 0
 Setup OK Servo index = 1
 Setup OK Servo index = 2
@@ -462,7 +462,7 @@ Servos idx = 5, act. pos. (deg) = 180, pulseWidth (us) = 2450
 
 ```
 Starting ESP32_ISR_MultiServos on ESP32_DEV
-ESP32_ISR_Servo v1.3.0
+ESP32_ISR_Servo v1.3.1
 Setup Servo1 OK
 Setup Servo2 OK
 Servo1 pos = 0, Servo2 pos = 180
@@ -507,7 +507,7 @@ Servo1 pos = 150, Servo2 pos = 30
 
 ```
 Starting MultipleRandomServos on ESP32S3_DEV
-ESP32_ISR_Servo v1.3.0
+ESP32_ISR_Servo v1.3.1
 [ISR_SERVO] ESP32_S3_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -601,7 +601,7 @@ Servos idx = 3, act. pos. (deg) = [ISR_SERVO] Idx = 3
 
 ```
 Starting ESP32_ISR_MultiServos on ESP32S2_DEV
-ESP32_ISR_Servo v1.3.0
+ESP32_ISR_Servo v1.3.1
 [ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -694,10 +694,12 @@ Submit issues to: [ESP32_ISR_Servo issues](https://github.com/khoih-prog/ESP32_I
 ### Contributions and thanks
 
 1. Thanks to [raphweb](https://github.com/raphweb) for the PR [Fixed count >= min comparison for servo enable.](https://github.com/khoih-prog/ESP32_ISR_Servo/pull/1) to fix bug and leading to the new releases v1.1.0
+2. Thanks to [Brent Rubell](https://github.com/brentru) for the PR [Add newer Adafruit boards](https://github.com/khoih-prog/ESP32_ISR_Servo/pull/5) to add support to new Adafruit boards such as QTPY_ESP32S2, FEATHER_ESP32S3_NOPSRAM and QTPY_ESP32S3_NOPSRAM, leading to the new releases v1.3.1
 
 <table>
   <tr>
     <td align="center"><a href="https://github.com/raphweb"><img src="https://github.com/raphweb.png" width="100px;" alt="raphweb"/><br /><sub><b>⭐️ raphweb</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/brentru"><img src="https://github.com/brentru.png" width="100px;" alt="brentru"/><br /><sub><b>⭐️ Brent Rubell</b></sub></a><br /></td>
   </tr> 
 </table>
 

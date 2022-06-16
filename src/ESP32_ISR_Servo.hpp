@@ -11,7 +11,7 @@
   Therefore, their executions are not blocked by bad-behaving functions / tasks.
   This important feature is absolutely necessary for mission-critical tasks.
 
-  Version: 1.3.0
+  Version: 1.3.1
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -22,6 +22,7 @@
   1.2.0   K Hoang      06/03/2022 Convert to `h-only` style. Optimize code by using passing by `reference`
   1.2.1   K Hoang      07/03/2022 Fix bug
   1.3.0   K Hoang      08/05/2022 Fix issue with ESP32 core v2.0.1+
+  1.3.1   K Hoang      16/06/2022 Add support to new Adafruit boards
  *****************************************************************************************************************************/
 
 #pragma once
@@ -37,7 +38,7 @@
         defined(ARDUINO_PROS3) || defined(ARDUINO_FEATHERS3) || defined(ARDUINO_ADAFRUIT_FEATHER_ESP32S3_NOPSRAM) || \
         defined(ARDUINO_ADAFRUIT_QTPY_ESP32S3_NOPSRAM))
   #define USING_ESP32_S3_TIMERINTERRUPT         true
-#elif ( ARDUINO_ESP32C3_DEV)
+#elif ( ARDUINO_ESP32C3_DEV )
   #define USING_ESP32_C3_TIMERINTERRUPT         true  
 #elif defined(ESP32)
   #define USING_ESP32_TIMERINTERRUPT            true  
@@ -46,13 +47,13 @@
 #endif
 
 #if !defined(ESP32_ISR_SERVO_VERSION)
-  #define ESP32_ISR_SERVO_VERSION             "ESP32_ISR_Servo v1.3.0"
+  #define ESP32_ISR_SERVO_VERSION             "ESP32_ISR_Servo v1.3.1"
   
   #define ESP32_ISR_SERVO_VERSION_MAJOR       1
   #define ESP32_ISR_SERVO_VERSION_MINOR       3
-  #define ESP32_ISR_SERVO_VERSION_PATCH       0
+  #define ESP32_ISR_SERVO_VERSION_PATCH       1
 
-  #define ESP32_ISR_SERVO_VERSION_INT         1003000
+  #define ESP32_ISR_SERVO_VERSION_INT         1003001
   
 #endif
 

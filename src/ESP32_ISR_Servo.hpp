@@ -11,7 +11,7 @@
   Therefore, their executions are not blocked by bad-behaving functions / tasks.
   This important feature is absolutely necessary for mission-critical tasks.
 
-  Version: 1.3.1
+  Version: 1.4.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -23,6 +23,7 @@
   1.2.1   K Hoang      07/03/2022 Fix bug
   1.3.0   K Hoang      08/05/2022 Fix issue with ESP32 core v2.0.1+
   1.3.1   K Hoang      16/06/2022 Add support to new Adafruit boards
+  1.4.0   K Hoang      03/08/2022 Suppress errors and warnings for new ESP32 core
  *****************************************************************************************************************************/
 
 #pragma once
@@ -47,13 +48,13 @@
 #endif
 
 #if !defined(ESP32_ISR_SERVO_VERSION)
-  #define ESP32_ISR_SERVO_VERSION             "ESP32_ISR_Servo v1.3.1"
+  #define ESP32_ISR_SERVO_VERSION             "ESP32_ISR_Servo v1.4.0"
   
   #define ESP32_ISR_SERVO_VERSION_MAJOR       1
-  #define ESP32_ISR_SERVO_VERSION_MINOR       3
-  #define ESP32_ISR_SERVO_VERSION_PATCH       1
+  #define ESP32_ISR_SERVO_VERSION_MINOR       4
+  #define ESP32_ISR_SERVO_VERSION_PATCH       0
 
-  #define ESP32_ISR_SERVO_VERSION_INT         1003001
+  #define ESP32_ISR_SERVO_VERSION_INT         1004000
   
 #endif
 

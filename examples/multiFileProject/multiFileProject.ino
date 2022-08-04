@@ -13,8 +13,8 @@
   #error This code is designed to run on ESP32 platform, not Arduino nor ESP32! Please check your Tools->Board setting.
 #endif
 
-#define ESP32_ISR_SERVO_VERSION_MIN_TARGET      "ESP32_ISR_Servo v1.2.0"
-#define ESP32_ISR_SERVO_VERSION_MIN             1002000
+#define ESP32_ISR_SERVO_VERSION_MIN_TARGET      "ESP32_ISR_Servo v1.4.0"
+#define ESP32_ISR_SERVO_VERSION_MIN             1004000
 
 #include "multiFileProject.h"
 

@@ -34,13 +34,13 @@
 //////////////////////////////////////////
 
 #ifndef ISR_SERVO_DEBUG
-  #define ISR_SERVO_DEBUG               1
+	#define ISR_SERVO_DEBUG               1
 #endif
 
 //////////////////////////////////////////
 
 #if !defined(ISR_SERVO_DEBUG_OUTPUT)
-  #define ISR_SERVO_DEBUG_OUTPUT    Serial
+	#define ISR_SERVO_DEBUG_OUTPUT    Serial
 #endif
 
 //////////////////////////////////////////////////////

@@ -69,7 +69,7 @@
    Experimentally, 550 and 2350 are pretty close to 0 and 180.
 *****************************************************************************************************************************/
 #ifndef ESP32
-  #error This code is designed to run on ESP32 platform, not Arduino nor ESP8266! Please check your Tools->Board setting.
+	#error This code is designed to run on ESP32 platform, not Arduino nor ESP8266! Please check your Tools->Board setting.
 #endif
 
 #define TIMER_INTERRUPT_DEBUG       1
@@ -81,9 +81,12 @@
 // To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
 #include "ESP32_ISR_Servo.h"
 
+// Don't use PIN_D1 in core v2.0.0 and v2.0.1. Check https://github.com/espressif/arduino-esp32/issues/5868
+// Don't use PIN_D2 with ESP32_C3 (crash)
+
 //See file .../hardware/espressif/esp32/variants/(esp32|doitESP32devkitV1)/pins_arduino.h
 #if !defined(LED_BUILTIN)
-  #define LED_BUILTIN       2         // Pin D2 mapped to pin GPIO2/ADC12 of ESP32, control on-board LED
+	#define LED_BUILTIN       2         // Pin D2 mapped to pin GPIO2/ADC12 of ESP32, control on-board LED
 #endif
 
 #define PIN_LED           2         // Pin D2 mapped to pin GPIO2/ADC12 of ESP32, control on-board LED
@@ -139,161 +142,165 @@
 
 typedef struct
 {
-  int     servoIndex;
-  uint8_t servoPin;
+	int     servoIndex;
+	uint8_t servoPin;
 } ISR_servo_t;
 
 ISR_servo_t ISR_servo[NUM_SERVOS] =
 {
-  { -1, PIN_D1 }, { -1, PIN_D2 }, { -1, PIN_D3 }, { -1, PIN_D4 }, { -1, PIN_D5 }, { -1, PIN_D6 }
+  { -1, PIN_D3 }, { -1, PIN_D4 }, { -1, PIN_D5 }, { -1, PIN_D6 }, { -1, PIN_D7 }, { -1, PIN_D8 }
 };
 
 void setup()
 {
-  Serial.begin(115200);
-  while (!Serial);
+	Serial.begin(115200);
 
-  delay(200);
+	while (!Serial && millis() < 5000);
 
-  Serial.print(F("\nStarting MultipleRandomServos on ")); Serial.println(ARDUINO_BOARD);
-  Serial.println(ESP32_ISR_SERVO_VERSION);
-  
-  //Select ESP32 timer USE_ESP32_TIMER_NO
-  ESP32_ISR_Servos.useTimer(USE_ESP32_TIMER_NO);
+  delay(500);
 
-  for (int index = 0; index < NUM_SERVOS; index++)
-  {
-    ISR_servo[index].servoIndex = ESP32_ISR_Servos.setupServo(ISR_servo[index].servoPin, MIN_MICROS, MAX_MICROS);
+	Serial.print(F("\nStarting MultipleRandomServos on "));
+	Serial.println(ARDUINO_BOARD);
+	Serial.println(ESP32_ISR_SERVO_VERSION);
 
-    if (ISR_servo[index].servoIndex != -1)
-    {
-      Serial.print(F("Setup OK Servo index = ")); Serial.println(ISR_servo[index].servoIndex);
-    }
-    else
-    {
-      Serial.print(F("Setup Failed Servo index = ")); Serial.println(ISR_servo[index].servoIndex);
-    }
-  }
+	//Select ESP32 timer USE_ESP32_TIMER_NO
+	ESP32_ISR_Servos.useTimer(USE_ESP32_TIMER_NO);
+
+	for (int index = 0; index < NUM_SERVOS; index++)
+	{
+		ISR_servo[index].servoIndex = ESP32_ISR_Servos.setupServo(ISR_servo[index].servoPin, MIN_MICROS, MAX_MICROS);
+
+		if (ISR_servo[index].servoIndex != -1)
+		{
+			Serial.print(F("Setup OK Servo index = "));
+			Serial.println(ISR_servo[index].servoIndex);
+		}
+		else
+		{
+			Serial.print(F("Setup Failed Servo index = "));
+			Serial.println(ISR_servo[index].servoIndex);
+		}
+	}
 }
 
 void printServoInfo(int indexServo)
 {
-  Serial.print(F("Servos idx = "));
-  Serial.print(indexServo);
-  Serial.print(F(", act. pos. (deg) = "));
-  Serial.print(ESP32_ISR_Servos.getPosition(ISR_servo[indexServo].servoIndex) );
-  Serial.print(F(", pulseWidth (us) = "));
-  Serial.println(ESP32_ISR_Servos.getPulseWidth(ISR_servo[indexServo].servoIndex));
+	Serial.print(F("Servos idx = "));
+	Serial.print(indexServo);
+	Serial.print(F(", act. pos. (deg) = "));
+	Serial.print(ESP32_ISR_Servos.getPosition(ISR_servo[indexServo].servoIndex) );
+	Serial.print(F(", pulseWidth (us) = "));
+	Serial.println(ESP32_ISR_Servos.getPulseWidth(ISR_servo[indexServo].servoIndex));
 }
 
 void loop()
 {
-  int position;      // position in degrees
+	int position;      // position in degrees
 
-  position = 0;
-  Serial.println(F("Servos @ 0 degree"));
-  
-  for (int index = 0; index < NUM_SERVOS; index++)
-  {
-    ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, position );
-    printServoInfo(index);
-  }
-  
-  // waits 5s between test
-  delay(5000);
+	position = 0;
+	Serial.println(F("Servos @ 0 degree"));
 
-  position = 90;
-  Serial.println(F("Servos @ 90 degree"));
-  
-  for (int index = 0; index < NUM_SERVOS; index++)
-  {
-    ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, position );
-    printServoInfo(index);
-  }
-  
-  // waits 5s between test
-  delay(5000);
+	for (int index = 0; index < NUM_SERVOS; index++)
+	{
+		ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, position );
+		printServoInfo(index);
+	}
 
-  position = 180;
-  Serial.println(F("Servos @ 180 degree"));
-  
-  for (int index = 0; index < NUM_SERVOS; index++)
-  {
-    ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, position );
-    printServoInfo(index);
-  }
-  
-  // waits 5s between test
-  delay(5000);
+	// waits 5s between test
+	delay(5000);
 
-  Serial.println(F("Servos sweeps from 0-180 degress"));
-  
-  for (position = 0; position <= 180; position += 1)
-  {
-    // goes from 0 degrees to 180 degrees
-    // in steps of 1 degree
-    for (int index = 0; index < NUM_SERVOS; index++)
-    {
-      ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, position );
-    }
-    
-    // waits 50ms for the servo to reach the position
-    delay(50);
-  }
-  
-  // waits 5s between test
-  delay(5000);
+	position = 90;
+	Serial.println(F("Servos @ 90 degree"));
 
-  Serial.println(F("Servos sweeps from 180-0 degress"));
-  
-  for (position = 180; position >= 0; position -= 1)
-  {
-    // goes from 0 degrees to 180 degrees
-    // in steps of 1 degree
-    for (int index = 0; index < NUM_SERVOS; index++)
-    {
-      ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, position );
-    }
-    
-    // waits 50ms for the servo to reach the position
-    delay(50);
-  }
-  
-  // waits 5s between test
-  delay(5000);
+	for (int index = 0; index < NUM_SERVOS; index++)
+	{
+		ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, position );
+		printServoInfo(index);
+	}
 
-  Serial.println(F("Servos, index depending, be somewhere from 0-180 degress"));
-  
-  for (position = 0; position <= 180; position += 1)
-  {
-    // goes from 0 degrees to 180 degrees
-    // in steps of 1 degree
-    for (int index = 0; index < NUM_SERVOS; index++)
-    {
-      ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, (position + index * (180 / NUM_SERVOS)) % 180 );
-    }
-    
-    // waits 50ms for the servo to reach the position
-    delay(50);
-  }
-  
-  delay(5000);
+	// waits 5s between test
+	delay(5000);
 
-  Serial.println(F("Servos, index depending, be somewhere from 180-0 degress"));
-  
-  for (position = 180; position >= 0; position -= 1)
-  {
-    // goes from 0 degrees to 180 degrees
-    // in steps of 1 degree
-    for (int index = 0; index < NUM_SERVOS; index++)
-    {
-      ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, (position + index * (180 / NUM_SERVOS)) % 180 );
-    }
-    
-    // waits 50ms for the servo to reach the position
-    delay(50);
-  }
-  
-  // waits 5s between test
-  delay(5000);
+	position = 180;
+	Serial.println(F("Servos @ 180 degree"));
+
+	for (int index = 0; index < NUM_SERVOS; index++)
+	{
+		ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, position );
+		printServoInfo(index);
+	}
+
+	// waits 5s between test
+	delay(5000);
+
+	Serial.println(F("Servos sweeps from 0-180 degress"));
+
+	for (position = 0; position <= 180; position += 1)
+	{
+		// goes from 0 degrees to 180 degrees
+		// in steps of 1 degree
+		for (int index = 0; index < NUM_SERVOS; index++)
+		{
+			ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, position );
+		}
+
+		// waits 50ms for the servo to reach the position
+		delay(50);
+	}
+
+	// waits 5s between test
+	delay(5000);
+
+	Serial.println(F("Servos sweeps from 180-0 degress"));
+
+	for (position = 180; position >= 0; position -= 1)
+	{
+		// goes from 0 degrees to 180 degrees
+		// in steps of 1 degree
+		for (int index = 0; index < NUM_SERVOS; index++)
+		{
+			ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, position );
+		}
+
+		// waits 50ms for the servo to reach the position
+		delay(50);
+	}
+
+	// waits 5s between test
+	delay(5000);
+
+	Serial.println(F("Servos, index depending, be somewhere from 0-180 degress"));
+
+	for (position = 0; position <= 180; position += 1)
+	{
+		// goes from 0 degrees to 180 degrees
+		// in steps of 1 degree
+		for (int index = 0; index < NUM_SERVOS; index++)
+		{
+			ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, (position + index * (180 / NUM_SERVOS)) % 180 );
+		}
+
+		// waits 50ms for the servo to reach the position
+		delay(50);
+	}
+
+	delay(5000);
+
+	Serial.println(F("Servos, index depending, be somewhere from 180-0 degress"));
+
+	for (position = 180; position >= 0; position -= 1)
+	{
+		// goes from 0 degrees to 180 degrees
+		// in steps of 1 degree
+		for (int index = 0; index < NUM_SERVOS; index++)
+		{
+			ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, (position + index * (180 / NUM_SERVOS)) % 180 );
+		}
+
+		// waits 50ms for the servo to reach the position
+		delay(50);
+	}
+
+	// waits 5s between test
+	delay(5000);
 }

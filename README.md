@@ -397,7 +397,7 @@ void loop()
 
 ### Example [ESP32_ISR_MultiServos](examples/ESP32_ISR_MultiServos)
 
-https://github.com/khoih-prog/ESP32_ISR_Servo/blob/f85c83625eaefcc27d89511e2d8bafbefcbd6291/examples/ESP32_ISR_MultiServos/ESP32_ISR_MultiServos.ino#L72-L211
+https://github.com/khoih-prog/ESP32_ISR_Servo/blob/18250af8451efd44e04fc5430ba07087b828f6b9/examples/ESP32_ISR_MultiServos/ESP32_ISR_MultiServos.ino#L72-L220
 
 ---
 ---

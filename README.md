@@ -436,10 +436,10 @@ Servos idx = 2, act. pos. (deg) = 180, pulseWidth (us) = 2450
 Servos idx = 3, act. pos. (deg) = 180, pulseWidth (us) = 2450
 Servos idx = 4, act. pos. (deg) = 180, pulseWidth (us) = 2450
 Servos idx = 5, act. pos. (deg) = 180, pulseWidth (us) = 2450
-Servos sweeps from 0-180 degress
-Servos sweeps from 180-0 degress
-Servos, index depending, be somewhere from 0-180 degress
-Servos, index depending, be somewhere from 180-0 degress
+Servos sweeps from 0-180 degrees
+Servos sweeps from 180-0 degrees
+Servos, index depending, be somewhere from 0-180 degrees
+Servos, index depending, be somewhere from 180-0 degrees
 Servos @ 0 degree
 Servos idx = 0, act. pos. (deg) = 0, pulseWidth (us) = 800
 Servos idx = 1, act. pos. (deg) = 0, pulseWidth (us) = 800
